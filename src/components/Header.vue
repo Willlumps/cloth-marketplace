@@ -1,5 +1,5 @@
 <template>
-  <div class="topnav">
+  <div class="header">
     <div id="left">
       <input type="search" id="search-site" placeholder="Search...">
     </div>
@@ -16,14 +16,14 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Topnav extends Vue {
+export default class Header extends Vue {
   @Prop() private msg!: string;
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.topnav {
+.header {
   width: 100%;
   height: 60px;
   background-color: #acadac;

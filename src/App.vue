@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div>
-      <Topnav/>
+      <Header/>
     </div>
     <div>
       <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
@@ -12,12 +12,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from './components/HelloWorld.vue';
-import Topnav from './components/Topnav.vue';
+import Header from './components/Header.vue';
 
 @Component({
   components: {
     HelloWorld,
-    Topnav,
+    Header,
   },
 })
 export default class App extends Vue {}
