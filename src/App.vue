@@ -27,12 +27,11 @@ export default class App extends Vue {}
 * {
   padding: 0px;
   margin: 0px;
-  font-family: Inconsolata;
   text-align: center;
 }
 
 body {
-  background-color: #50b4c3;
+  background-color: #5bbffc;
 }
 
 </style>
