@@ -1,21 +1,30 @@
 <template>
   <div id="container">
     <h2>FEATURED ITEMS OR SOME SHIT IDK</h2>
-    <div id="gallery">
-      <div v-for="n in 10" v-bind:key="n" id="gallery-item">
-        <a href="https://www.google.com">
-          <img alt="Vue logo" src="../assets/logo.png" class="logo">
-        </a>
+    <div id="gallery" >
+      <div v-for="n in 10" v-bind:key="n" id="gallery-item" @click="toggleModal" >
+        <img alt="Vue logo" src="../assets/logo.png" class="logo" >
       </div>
     </div>
+    <ItemModal v-show="showModal" @close-modal="toggleModal" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
+import ItemModal from './ItemModal.vue';
 
-@Component
+@Component({
+  components: {
+    ItemModal
+  }
+})
 export default class Gallery extends Vue {
+  showModal = false;
+
+  toggleModal() {
+    this.showModal = !this.showModal;
+  }
 }
 </script>
 
@@ -24,7 +33,6 @@ export default class Gallery extends Vue {
 
 #container {
   max-width: 1000px;
-  /* padding: 10px; */
   margin: 0 auto;
   background: rgba(0,0,0,.2);
   margin-top: 20px;
@@ -33,7 +41,6 @@ export default class Gallery extends Vue {
 }
 
 #gallery {
-  /* border: 2px solid #cccccc; */
   display: table;
   width: 100%;
 }
