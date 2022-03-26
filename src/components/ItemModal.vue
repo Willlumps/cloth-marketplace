@@ -115,7 +115,7 @@ div {
 .item-image {
   width: 600px;
   height: 575px;
-  background-color: #5bbffc;
+  background-color: #86C6F4;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
 }
@@ -172,6 +172,7 @@ button {
 }
 
 button:hover {
-  background-color: #CCCCCC;
+  background-color: #FFF1CE;
+  outline: 2px solid #88C6CF;
 }
 </style>

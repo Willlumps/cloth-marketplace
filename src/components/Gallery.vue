@@ -52,6 +52,11 @@ export default class Gallery extends Vue {
     margin: 1%;
     padding: 1%;
     box-shadow: 5px 5px 5px rgba(0,0,0,.2);
+    cursor: pointer;
+}
+
+#gallery-item:hover {
+    box-shadow: 5px 5px 5px #D29D2B;
 }
 
 #galler-item img {

@@ -51,11 +51,10 @@ export default class Header extends Vue {
   border-radius: 5px;
   float: left;
   padding: 10px 15px;
-  border-color: #5bbffc;
+  border-color: #86C6F4;
 }
 
 #search-btn {
-  background-color: #5bbffc;
   float: left;
   margin-left: 10px;
   padding: 17px 15px;
@@ -65,11 +64,19 @@ export default class Header extends Vue {
 
 #right button {
   margin-right: 15px;
-  background-color: #5bbffc;
   float: right;
   padding: 16px 15px;
   border-radius: 5px;
   border: none;
+}
+
+button {
+  background-color: #86C6F4;
+}
+
+button:hover {
+  background-color: #FFF1CE;
+  outline: 2px solid #88C6CF;
 }
 
 </style>
