@@ -2,25 +2,44 @@
   <div id="container">
     <h2>FEATURED ITEMS OR SOME SHIT IDK</h2>
     <div id="gallery" >
-      <div v-for="n in 10" v-bind:key="n" id="gallery-item" @click="toggleModal" >
-        <img alt="Vue logo" src="../assets/logo.png" class="logo" >
-      </div>
+      <template v-for="user in this.users">
+        <div v-for="item in user.items" v-bind:key="item.img" id="gallery-item" @click="displayInfo(item, user.location)" >
+          <img width="200px" height="200px" v-bind:src="item.img" class="logo" >
+        </div>
+      </template>
     </div>
-    <ItemModal v-show="showModal" @close-modal="toggleModal" />
+    <ItemModal v-show="showModal" @close-modal="toggleModal" v-bind:item="this.modalItem" v-bind:location="this.location"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ItemModal from './ItemModal.vue';
+import { db } from "../myconfig";
+import { getAllItems } from "../get-items";
 
 @Component({
   components: {
     ItemModal
   }
 })
+
 export default class Gallery extends Vue {
   showModal = false;
+  users: any[] = [];
+  modalItem = {};
+  location = "";
+
+  async mounted() {
+    this.users = await getAllItems(db);
+    console.log(this.users);
+  }
+
+  displayInfo(item: object, location: string) {
+    this.modalItem = item;
+    this.location = location;
+    this.toggleModal()
+  }
 
   toggleModal() {
     this.showModal = !this.showModal;

@@ -3,32 +3,29 @@
     <div class="modal" @click.stop="">
       <div id="left">
         <div class="item-image">
-          <img src="../assets/shirt.jpeg" >
+          <img v-bind:src="item.img" >
         </div>
       </div>
       <div class="item-info">
         <div class="primary-info">
-          <h1>Item Name</h1>
+          <h1>{{ item.name }}</h1>
           <div class="location">
             <img src="../assets/money.png" >
-            <h3>$6.00</h3>
+            <h3>${{ item.price }}</h3>
           </div>
           <div class="location">
             <img src="../assets/globe.png" >
-            <h3>Allendale</h3>
+            <h3>{{ location }}</h3>
           </div>
         </div>
         <div class="price">
         </div>
         <div class="tags">
           <h2>Description</h2>
-          <p>This shirt is a size medium. I tie dyed it myself! Has been washed several times so it is unlikely to bleed in the wash. Price negotiable... Message me!</p>
+          <p>{{ item.description }} </p>
           <h2>Tags</h2>
-          <ul>
-            <li>Multi</li>
-            <li>Medium</li>
-            <li>Unisex</li>
-            <li>Casual</li>
+          <ul v-for="(tag, n) in item.tags" :key="n">
+            <li>{{ tag }} </li>
           </ul>
         </div>
         <button id="buy-btn" @click="$emit('close-modal')" >Buy Now!</button>
@@ -38,7 +35,8 @@
 </template>
 
 <script>
-  export default {
+export default {
+  props: ['item', 'location']
 }
 </script>
 
