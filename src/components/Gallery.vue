@@ -15,7 +15,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ItemModal from './ItemModal.vue';
-import { db } from "../myconfig";
 import { getAllItems } from "../get-items";
 
 @Component({
@@ -31,8 +30,7 @@ export default class Gallery extends Vue {
   location = "";
 
   async mounted() {
-    this.users = await getAllItems(db);
-    console.log(this.users);
+    this.users = await getAllItems();
   }
 
   displayInfo(item: object, location: string) {
@@ -47,7 +45,6 @@ export default class Gallery extends Vue {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 #container {
