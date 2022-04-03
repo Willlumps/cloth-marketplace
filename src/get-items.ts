@@ -19,7 +19,6 @@ async function getAllItems() {
   for (const i of userBucket) {
     for (const j of i.items) {
       items.push(j);
-      items.push(j);
     }
   }
 
@@ -38,15 +37,37 @@ async function getLocationByUser(user: string) {
   return location;
 }
 
-
-async function upload(file: any): Promise<string> {
+async function upload(file: any) {
+  return new Promise((resolve, reject) => {
     const metadata = {
       contentType: 'image/jpeg'
     };
 
-    const uploadRef = ref(storage, 'shirt.jpeg');
+    const img = uuidv4();
+    const uploadRef = ref(storage, `${img}.jpeg`);
     const uploadTask = uploadBytesResumable(uploadRef, file,  metadata);
-    return getDownloadURL(uploadTask.snapshot.ref);
+
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+      },
+      (error) => {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        console.log(error);
+        reject();
+      },
+      async () => {
+        // Upload completed successfully, now we can get the download URL
+         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          resolve(downloadURL);
+          return downloadURL;
+        });
+      }
+    );
+  });
 }
 
 function addItem(user: string, info: object) {

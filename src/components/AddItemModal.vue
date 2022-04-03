@@ -28,17 +28,18 @@ export default {
   methods: {
     async addItemToGallery() {
       const file = document.getElementById('image').files[0];
-      await upload(file).then((imgURL) => {
-        const tagList = this.tags.split(", ");
-        const test = {
-          "description": this.description,
-          "img": imgURL,
-          "name": this.name,
-          "price": this.price,
-          "tags": tagList,
-        };
-        addItem("user1", test);
-      });
+      const imgURL = await upload(file);
+      console.log(imgURL);
+      const tagList = this.tags.split(", ");
+      const item = {
+        "description": this.description,
+        "img": imgURL,
+        "name": this.name,
+        "price": this.price,
+        "tags": tagList,
+      };
+      addItem("user1", item);
+      this.$emit("close-modal");
     }
   }
 }
