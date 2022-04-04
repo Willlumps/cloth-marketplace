@@ -3,28 +3,41 @@
     <h2>FEATURED ITEMS OR SOME SHIT IDK</h2>
     <div id="gallery">
       <template v-for="user in this.users">
-        <div v-for="item in user.items" v-bind:key="item.img" id="gallery-item" @click="displayInfo(item, user.location)" >
-          <img width="200px" height="200px" v-bind:src="item.img" class="logo" >
+        <div
+          v-for="item in user.items"
+          v-bind:key="item.img"
+          id="gallery-item"
+          @click="displayInfo(item, user.location)"
+        >
+          <img
+            width="200px"
+            height="200px"
+            v-bind:src="item.img"
+            class="logo"
+          />
         </div>
       </template>
     </div>
-    <ItemModal v-show="showModal" @close-modal="toggleModal" v-bind:item="this.modalItem" v-bind:location="this.location"/>
+    <ItemModal
+      v-show="showModal"
+      @close-modal="toggleModal"
+      v-bind:item="this.modalItem"
+      v-bind:location="this.location"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import ItemModal from './ItemModal.vue';
+import { Component, Vue } from "vue-property-decorator";
+import ItemModal from "./ItemModal.vue";
 import { getAllItems } from "../get-items";
 
 @Component({
   components: {
-    ItemModal
-  }
+    ItemModal,
+  },
 })
-
 export default class Gallery extends Vue {
-  @Prop() updateGallery!: number;
   showModal = false;
   users: any[] = [];
   modalItem = {};
@@ -37,25 +50,22 @@ export default class Gallery extends Vue {
   displayInfo(item: object, location: string) {
     this.modalItem = item;
     this.location = location;
-    this.toggleModal()
+    this.toggleModal();
   }
 
   toggleModal() {
     this.showModal = !this.showModal;
   }
 }
-
 </script>
 
 <style scoped>
-
 #container {
   max-width: 1000px;
   margin: 0 auto;
-  background: rgba(0,0,0,.2);
+  background: rgba(0, 0, 0, 0.2);
   margin-top: 20px;
   padding: 5px;
-
 }
 
 #gallery {
@@ -64,21 +74,20 @@ export default class Gallery extends Vue {
 }
 
 #gallery-item {
-    float: left;
-    background: #f9f9f9;
-    width: 21%;
-    margin: 1%;
-    padding: 1%;
-    box-shadow: 5px 5px 5px rgba(0,0,0,.2);
-    cursor: pointer;
+  float: left;
+  background: #f9f9f9;
+  width: 21%;
+  margin: 1%;
+  padding: 1%;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 #gallery-item:hover {
-    box-shadow: 5px 5px 5px #D29D2B;
+  box-shadow: 5px 5px 5px #d29d2b;
 }
 
 #galler-item img {
-    width: 100%;
+  width: 100%;
 }
-
 </style>

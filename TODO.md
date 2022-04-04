@@ -11,16 +11,16 @@
 - [~] Assign tasks to group
 - [ ] Everything else
 
-
 ## Tasks
 
 ### Clare
+
 - [~] Firebase Setup
 
 ### Lauren
+
 - [ ] Stuff
 
 ### Nate
+
 - [~] Popup Modal
-
-

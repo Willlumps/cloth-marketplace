@@ -1,7 +1,15 @@
-import { collection, getDocs, getDoc, doc, QueryDocumentSnapshot, QuerySnapshot, DocumentSnapshot } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  DocumentSnapshot,
+} from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db, storage } from "./myconfig";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 async function getAllItems() {
   // TODO: make concrete type
@@ -40,17 +48,19 @@ async function getLocationByUser(user: string) {
 async function upload(file: any) {
   return new Promise((resolve, reject) => {
     const metadata = {
-      contentType: 'image/jpeg'
+      contentType: "image/jpeg",
     };
 
     const img = uuidv4();
     const uploadRef = ref(storage, `${img}.jpeg`);
-    const uploadTask = uploadBytesResumable(uploadRef, file,  metadata);
+    const uploadTask = uploadBytesResumable(uploadRef, file, metadata);
 
-    uploadTask.on('state_changed',
+    uploadTask.on(
+      "state_changed",
       (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
       },
       (error) => {
         // A full list of error codes is available at
@@ -60,8 +70,8 @@ async function upload(file: any) {
       },
       async () => {
         // Upload completed successfully, now we can get the download URL
-         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
           resolve(downloadURL);
           return downloadURL;
         });
@@ -70,5 +80,4 @@ async function upload(file: any) {
   });
 }
 
-export { getAllItems, getLocationByUser, upload }
-
+export { getAllItems, getLocationByUser, upload };

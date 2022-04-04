@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div id="left">
-      <input type="search" id="search-site" placeholder="Search...">
+      <input type="search" id="search-site" placeholder="Search..." />
       <button id="search-btn">GO</button>
     </div>
     <div id="right">
@@ -13,14 +13,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 
 // TODO: Emit an event and have the parent handle the modal instead?
 @Component({
-  components: {
-  }
+  components: {},
 })
-
 export default class Header extends Vue {}
 </script>
 
@@ -34,16 +32,17 @@ export default class Header extends Vue {}
   border-bottom: 1px solid black;
 }
 
-#left, #right {
+#left,
+#right {
   width: 50%;
 }
 
 #left {
-  float:left;
+  float: left;
 }
 
 #right {
-  float:right;
+  float: right;
 }
 
 #search-site {
@@ -54,7 +53,7 @@ export default class Header extends Vue {}
   border-radius: 5px;
   float: left;
   padding: 10px 15px;
-  border-color: #86C6F4;
+  border-color: #86c6f4;
 }
 
 #search-btn {
@@ -74,12 +73,11 @@ export default class Header extends Vue {}
 }
 
 button {
-  background-color: #86C6F4;
+  background-color: #86c6f4;
 }
 
 button:hover {
-  background-color: #FFF1CE;
-  outline: 2px solid #88C6CF;
+  background-color: #fff1ce;
+  outline: 2px solid #88c6cf;
 }
-
 </style>

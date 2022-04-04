@@ -3,32 +3,31 @@
     <div class="modal" @click.stop="">
       <div id="left">
         <div class="item-image">
-          <img v-bind:src="item.img" >
+          <img v-bind:src="item.img" />
         </div>
       </div>
       <div class="item-info">
         <div class="primary-info">
           <h1>{{ item.name }}</h1>
           <div class="location">
-            <img src="../assets/money.png" >
+            <img src="../assets/money.png" />
             <h3>${{ item.price }}</h3>
           </div>
           <div class="location">
-            <img src="../assets/globe.png" >
+            <img src="../assets/globe.png" />
             <h3>{{ location }}</h3>
           </div>
         </div>
-        <div class="price">
-        </div>
+        <div class="price"></div>
         <div class="tags">
           <h2>Description</h2>
-          <p>{{ item.description }} </p>
+          <p>{{ item.description }}</p>
           <h2>Tags</h2>
           <ul v-for="(tag, n) in item.tags" :key="n">
-            <li>{{ tag }} </li>
+            <li>{{ tag }}</li>
           </ul>
         </div>
-        <button id="buy-btn" @click="$emit('close-modal')" >Buy Now!</button>
+        <button id="buy-btn" @click="$emit('close-modal')">Buy Now!</button>
       </div>
     </div>
   </div>
@@ -36,12 +35,11 @@
 
 <script>
 export default {
-  props: ['item', 'location']
-}
+  props: ["item", "location"],
+};
 </script>
 
 <style scoped>
-
 div {
   float: left;
 }
@@ -56,7 +54,6 @@ div {
   justify-content: center;
   background-color: #000000da;
 }
-
 
 .modal {
   width: 1000px;
@@ -113,7 +110,7 @@ div {
 .item-image {
   width: 600px;
   height: 575px;
-  background-color: #86C6F4;
+  background-color: #86c6f4;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
 }
@@ -170,7 +167,7 @@ button {
 }
 
 button:hover {
-  background-color: #FFF1CE;
-  outline: 2px solid #88C6CF;
+  background-color: #fff1ce;
+  outline: 2px solid #88c6cf;
 }
 </style>
