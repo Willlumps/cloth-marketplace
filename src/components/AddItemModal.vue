@@ -14,7 +14,9 @@
 
 <script>
 
-import { upload, addItem } from '../get-items';
+import { upload } from '../get-items';
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../myconfig";
 
 export default {
   data: function() {
@@ -29,8 +31,8 @@ export default {
     async addItemToGallery() {
       const file = document.getElementById('image').files[0];
       const imgURL = await upload(file);
-      console.log(imgURL);
       const tagList = this.tags.split(", ");
+
       const item = {
         "description": this.description,
         "img": imgURL,
@@ -38,9 +40,14 @@ export default {
         "price": this.price,
         "tags": tagList,
       };
-      addItem("user1", item);
-      this.$emit("close-modal");
-    }
+
+      // TODO: Get logged in user instead of "user1"
+      const userDoc = doc(db, "users", "user1");
+      updateDoc(userDoc, { items: arrayUnion(item) }).then (() => {
+        console.log("success");
+        this.$emit("close-modal");
+      });
+    },
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="container">
     <h2>FEATURED ITEMS OR SOME SHIT IDK</h2>
-    <div id="gallery" >
+    <div id="gallery">
       <template v-for="user in this.users">
         <div v-for="item in user.items" v-bind:key="item.img" id="gallery-item" @click="displayInfo(item, user.location)" >
           <img width="200px" height="200px" v-bind:src="item.img" class="logo" >
@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import ItemModal from './ItemModal.vue';
 import { getAllItems } from "../get-items";
 
@@ -24,6 +24,7 @@ import { getAllItems } from "../get-items";
 })
 
 export default class Gallery extends Vue {
+  @Prop() updateGallery!: number;
   showModal = false;
   users: any[] = [];
   modalItem = {};
@@ -43,6 +44,7 @@ export default class Gallery extends Vue {
     this.showModal = !this.showModal;
   }
 }
+
 </script>
 
 <style scoped>

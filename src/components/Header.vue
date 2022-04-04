@@ -7,30 +7,21 @@
     <div id="right">
       <button id="wishlist-btn">MY WISHLIST</button>
       <button id="wishlist-btn">MARKETPLACE</button>
-      <button id="wishlist-btn" @click="toggleModal">ADD ITEMS</button>
+      <button id="wishlist-btn" @click="$emit('add-item')">ADD ITEMS</button>
     </div>
-    <AddItemModal v-show="showModal" @close-modal="toggleModal" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import AddItemModal from './AddItemModal.vue';
 
 // TODO: Emit an event and have the parent handle the modal instead?
 @Component({
   components: {
-    AddItemModal,
   }
 })
 
-export default class Header extends Vue {
-  showModal = false;
-
-  toggleModal() {
-    this.showModal = !this.showModal;
-  }
-}
+export default class Header extends Vue {}
 </script>
 
 <style scoped>

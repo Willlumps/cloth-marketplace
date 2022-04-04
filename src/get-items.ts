@@ -1,4 +1,4 @@
-import { updateDoc, arrayUnion, collection, getDocs, getDoc, doc, QueryDocumentSnapshot, QuerySnapshot, DocumentSnapshot } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, QueryDocumentSnapshot, QuerySnapshot, DocumentSnapshot } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { db, storage } from "./myconfig";
 import { v4 as uuidv4 } from 'uuid';
@@ -70,11 +70,5 @@ async function upload(file: any) {
   });
 }
 
-function addItem(user: string, info: object) {
-  console.log(info);
-  const userDoc = doc(db, "users", user);
-  updateDoc(userDoc, { items: arrayUnion(info) }).then (() => { console.log("success"); });
-}
-
-export { getAllItems, getLocationByUser, upload, addItem }
+export { getAllItems, getLocationByUser, upload }
 
