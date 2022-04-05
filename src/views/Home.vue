@@ -6,7 +6,7 @@
     <div>
       <Gallery :key="refreshGallery" />
     </div>
-    <AddItemModal v-show="showAddItemModal" @close-modal="toggleAddItemModal" />
+    <AddItemModal v-show="showAddItemModal" @close-modal="toggleAddItemModal" @add-success="refresh" />
   </div>
 </template>
 
@@ -28,6 +28,10 @@ export default class Home extends Vue {
   refreshGallery = 0;
 
   async toggleAddItemModal() {
+    this.showAddItemModal = !this.showAddItemModal;
+  }
+
+  refresh() {
     this.showAddItemModal = !this.showAddItemModal;
     this.refreshGallery++;
   }
