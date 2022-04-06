@@ -6,7 +6,11 @@
     <div>
       <Gallery :key="refreshGallery" />
     </div>
-    <AddItemModal v-show="showAddItemModal" @close-modal="toggleAddItemModal" @add-success="refresh" />
+    <AddItemModal
+      v-show="showAddItemModal"
+      @close-modal="toggleAddItemModal"
+      @add-success="refresh"
+    />
   </div>
 </template>
 

@@ -1,32 +1,58 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
-    <div class="modal" @click.stop="">
+    <form class="modal" @submit.prevent="addItemToGallery" @click.stop="">
       <h1>List Item</h1>
       <div id="field">
         <div id="left"><h3>Item Name</h3></div>
-        <input v-model="name" placeholder="Enter a name" />
+        <input
+          name="name"
+          v-model="name"
+          placeholder="Enter a name"
+          :class="{ invalid: isSubmitting && !name.trim() }"
+        />
       </div>
       <div id="field">
         <div id="left"><h3>Price</h3></div>
-        <input v-model="price" type="tel" placeholder="0.00" />
+        <input
+          name="price"
+          v-model="price"
+          type="number"
+          placeholder="0.00"
+          :class="{ invalid: isSubmitting && !price }"
+        />
       </div>
       <div id="field">
         <div id="left"><h3>Description</h3></div>
-        <textarea v-model="description" rows="5" placeholder="Add a description..." />
+        <textarea
+          name="description"
+          v-model="description"
+          rows="5"
+          placeholder="Add a description..."
+          :class="{ invalid: isSubmitting && !description.trim() }"
+        />
       </div>
       <div id="field">
         <div id="left"><h3>Tags</h3></div>
-        <input v-model="tags" placeholder="Enter, tags, comma, separated" />
+        <input
+          name="tags"
+          v-model="tags"
+          placeholder="Enter, tags, comma, separated"
+          :class="{ invalid: isSubmitting && !tags.trim() }"
+        />
       </div>
       <div id="field">
         <div id="left"><h3>Image</h3></div>
-        <input id="image" type="file" ref="img" accept="image/*" />
+        <input name="image" id="image" type="file" ref="img" accept="image/*" />
       </div>
       <div id="btns">
-        <button type="button" class="add-button" @click="addItemToGallery">Add Item!</button>
-        <button type="button" class="cancel-button" @click="$emit('close-modal')">Cancel</button>
+        <button type="button" class="add-button" @click="addItemToGallery">
+          Add Item!
+        </button>
+        <button type="button" class="cancel-button" @click="closeModal">
+          Cancel
+        </button>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -42,10 +68,15 @@ export default {
       description: "",
       price: 0,
       tags: "",
+      isSubmitting: false,
     };
   },
   methods: {
     async addItemToGallery() {
+      if (!this.validateInput()) {
+        this.isSubmitting = true;
+        return;
+      }
       const file = document.getElementById("image").files[0];
       const imgURL = await upload(file);
       const tagList = this.tags.split(", ");
@@ -63,14 +94,44 @@ export default {
       updateDoc(userDoc, { items: arrayUnion(item) }).then(() => {
         console.log("Successfully Added Item");
         this.$emit("add-success");
+        this.resetForm();
       });
+    },
+
+    validateInput() {
+      return (
+        this.name.length > 0 &&
+        this.description.length > 0 &&
+        this.price > 0 &&
+        this.tags.length > 0 &&
+        this.hasImage()
+      );
+    },
+    closeModal() {
+      this.isSubmitting = false;
+      this.$emit("close-modal");
+    },
+
+    hasImage() {
+      return document.getElementById("image").value != "";
+    },
+
+    resetForm() {
+      this.name = "";
+      (this.description = ""), (this.price = 0);
+      this.tags = "";
+      this.isSubmitting = false;
+      const input = document.getElementById("image");
+      input.value = "";
     },
   },
 };
 </script>
 
 <style scoped>
-
+.invalid {
+  border: solid 2px red;
+}
 
 .modal-overlay {
   position: fixed;
