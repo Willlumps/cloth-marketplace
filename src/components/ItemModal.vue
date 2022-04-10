@@ -27,7 +27,9 @@
             <li>{{ tag }}</li>
           </ul>
         </div>
-        <button id="buy-btn" @click="$emit('close-modal')">Buy Now!</button>
+      </div>
+      <div class="buy-btn">
+        <button @click="$emit('close-modal')">Buy Now!</button>
       </div>
     </div>
   </div>
@@ -117,7 +119,7 @@ div {
 
 .item-info {
   width: 400px;
-  height: 575px;
+  height: 500px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -157,13 +159,16 @@ p {
   margin: 20px 0;
 }
 
+.buy-btn {
+  width: 400px;
+}
+
 button {
   background-color: #5bbffc;
   border-radius: 5px;
   width: 300px;
-  height: 75px;
+  height: 65px;
   font-size: 200%;
-  margin-top: 110px;
 }
 
 button:hover {
