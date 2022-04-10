@@ -2,12 +2,11 @@
   <div id="container">
     <h2>FEATURED ITEMS OR SOME SHIT IDK</h2>
     <div id="gallery">
-      <template v-for="user in this.users">
+      <template v-for="item in this.items">
         <div
-          v-for="item in user.items"
           v-bind:key="item.img"
           id="gallery-item"
-          @click="displayInfo(item, user.location)"
+          @click="displayInfo(item)"
         >
           <img
             width="200px"
@@ -39,17 +38,18 @@ import { getAllItems } from "../get-items";
 })
 export default class Gallery extends Vue {
   showModal = false;
-  users: any[] = [];
+  items: any[] = [];
   modalItem = {};
   location = "";
 
   async mounted() {
-    this.users = await getAllItems();
+    this.items = await getAllItems();
   }
 
-  displayInfo(item: object, location: string) {
+  displayInfo(item: object) {
     this.modalItem = item;
-    this.location = location;
+    // TODO: Fix location
+    this.location = "Allendale";
     this.toggleModal();
   }
 

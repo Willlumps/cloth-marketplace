@@ -58,7 +58,7 @@
 
 <script>
 import { upload } from "../get-items";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../myconfig";
 
 export default {
@@ -78,20 +78,17 @@ export default {
         return;
       }
       const file = document.getElementById("image").files[0];
-      const imgURL = await upload(file);
+      const [imgURL, docName] = await upload(file);
       const tagList = this.tags.split(", ");
 
-      const item = {
+      await setDoc(doc(db, "items", docName.toString()), {
         description: this.description,
         img: imgURL,
         name: this.name,
         price: parseInt(this.price, 10).toFixed(2),
         tags: tagList,
-      };
-
-      // TODO: Get logged in user instead of "user1"
-      const userDoc = doc(db, "users", "user1");
-      updateDoc(userDoc, { items: arrayUnion(item) }).then(() => {
+        user: "user1",
+      }).then(() => {
         console.log("Successfully Added Item");
         this.$emit("add-success");
         this.resetForm();

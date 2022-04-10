@@ -12,25 +12,16 @@ import { db, storage } from "./myconfig";
 import { v4 as uuidv4 } from "uuid";
 
 async function getAllItems() {
-  // TODO: make concrete type
-  const userBucket: any[] = [];
-  const users = collection(db, "users");
+  const items: any[] = [];
+  const itemCollection = collection(db, "items");
 
-  await getDocs(users).then((qs: QuerySnapshot) => {
+  await getDocs(itemCollection).then((qs: QuerySnapshot) => {
     qs.forEach((qd: QueryDocumentSnapshot) => {
-      // Put all the users in a bucket
-      userBucket.push(qd.data());
+      items.push(qd.data());
     });
   });
 
-  const items = [];
-  for (const i of userBucket) {
-    for (const j of i.items) {
-      items.push(j);
-    }
-  }
-
-  return userBucket;
+  return items;
 }
 
 async function getLocationByUser(user: string) {
@@ -72,8 +63,8 @@ async function upload(file: any) {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log("File available at", downloadURL);
-          resolve(downloadURL);
-          return downloadURL;
+          resolve([downloadURL, img]);
+          return [downloadURL, img];
         });
       }
     );
