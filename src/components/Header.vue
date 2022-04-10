@@ -1,8 +1,8 @@
 <template>
   <div class="header">
     <div id="left">
-      <input type="search" id="search-site" placeholder="Search..." />
-      <button id="search-btn">GO</button>
+      <input v-model="searchinput" type="search" id="search-site" placeholder="Search..." />
+      <button id="search-btn" @click="search">GO</button>
     </div>
     <div id="right">
       <button id="wishlist-btn">MY WISHLIST</button>
@@ -13,13 +13,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
-// TODO: Emit an event and have the parent handle the modal instead?
 @Component({
   components: {},
 })
-export default class Header extends Vue {}
+export default class Header extends Vue {
+  searchinput = "";
+
+  search() {
+    this.$emit("search-term", this.searchinput);
+  }
+
+  @Watch("searchinput")
+  refreshGallery() {
+    if (this.searchinput === "") {
+      this.$emit("refresh-gallery");
+    }
+  }
+}
 </script>
 
 <style scoped>

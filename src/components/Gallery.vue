@@ -1,8 +1,9 @@
 <template>
   <div id="container">
     <h2>FEATURED ITEMS OR SOME SHIT IDK</h2>
+    <h2 v-if="searchMatch">No results :(</h2>
     <div id="gallery">
-      <template v-for="item in this.items">
+      <template v-for="item in this.galleryItems">
         <div
           v-bind:key="item.img"
           id="gallery-item"
@@ -27,9 +28,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import ItemModal from "./ItemModal.vue";
-import { getAllItems } from "../get-items";
 
 @Component({
   components: {
@@ -37,19 +37,18 @@ import { getAllItems } from "../get-items";
   },
 })
 export default class Gallery extends Vue {
+  @Prop() galleryItems!: object[];
+  @Prop() location!: string;
+  @Prop() searchMatch!: boolean;
   showModal = false;
-  items: any[] = [];
   modalItem = {};
-  location = "";
 
-  async mounted() {
-    this.items = await getAllItems();
+  mounted() {
+    // delete me
   }
 
   displayInfo(item: object) {
     this.modalItem = item;
-    // TODO: Fix location
-    this.location = "Allendale";
     this.toggleModal();
   }
 
