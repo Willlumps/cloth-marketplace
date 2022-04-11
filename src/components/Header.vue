@@ -2,12 +2,12 @@
   <div class="header">
     <div id="left">
       <input v-model="searchinput" type="search" id="search-site" placeholder="Search..." />
-      <button id="search-btn" @click="search">GO</button>
+      <button id="btn" @click="search">GO</button>
     </div>
     <div id="right">
-      <button id="wishlist-btn">MY WISHLIST</button>
-      <button id="wishlist-btn">MARKETPLACE</button>
-      <button id="wishlist-btn" @click="$emit('add-item')">ADD ITEMS</button>
+      <button id="btn">MY WISHLIST</button>
+      <button id="btn">MARKETPLACE</button>
+      <button id="btn" @click="$emit('add-item')">ADD ITEMS</button>
     </div>
   </div>
 </template>
@@ -68,12 +68,14 @@ export default class Header extends Vue {
   border-color: #86c6f4;
 }
 
-#search-btn {
+#left #btn {
   float: left;
   margin-left: 10px;
+  margin-top: 4px;
   padding: 17px 15px;
   border-radius: 5px;
   border: none;
+  width: 75px;
 }
 
 #right button {
@@ -84,12 +86,28 @@ export default class Header extends Vue {
   border: none;
 }
 
-button {
-  background-color: #86c6f4;
+#btn {
+  height: 45px;
+  width: 150px;
+  font-size: 12px;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease-in 0s;
+  outline: 2px solid grey;
 }
 
-button:hover {
-  background-color: #fff1ce;
-  outline: 2px solid #88c6cf;
+#btn:hover {
+  background-color: #ccf1ff;
+  border-radius: 60px;
+  color: rgb(5, 5, 5) !important;
 }
+
+#left #btn:hover {
+  background-color: #ccf1ff;
+  border-radius: 60px;
+  color: rgb(5, 5, 5) !important;
+}
+
+
 </style>

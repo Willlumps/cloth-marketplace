@@ -65,6 +65,7 @@ export default class Gallery extends Vue {
   background: rgba(0, 0, 0, 0.2);
   margin-top: 20px;
   padding: 5px;
+  border-radius: 15px;
 }
 
 #gallery {
@@ -80,13 +81,22 @@ export default class Gallery extends Vue {
   padding: 1%;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  border-radius: 7px;
 }
 
 #gallery-item:hover {
-  box-shadow: 5px 5px 5px #d29d2b;
+  transform: scale(1.05);
 }
 
 #galler-item img {
   width: 100%;
+}
+
+img {
+  object-fit: scale-down;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 3px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
 </style>

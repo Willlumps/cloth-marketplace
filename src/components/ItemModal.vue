@@ -3,7 +3,7 @@
     <div class="modal" @click.stop="">
       <div id="left">
         <div class="item-image">
-          <img v-bind:src="item.img" />
+          <img v-bind:src="item.img" class="scale" />
         </div>
       </div>
       <div class="item-info">
@@ -110,11 +110,23 @@ div {
 }
 
 .item-image {
-  width: 600px;
+  width: 598px;
   height: 575px;
-  background-color: #86c6f4;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
+  border-right: 2px solid black;
+}
+
+img {
+  object-fit: scale-down;
+}
+
+.scale {
+  background-color: #ccf1ff;
+  border: 1px solid grey;
+  border-radius: 7px;
+  max-width: 550px;
+  max-height: 540px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  padding: 5px;
 }
 
 .item-info {
@@ -164,15 +176,20 @@ p {
 }
 
 button {
-  background-color: #5bbffc;
+  background-color: transparent;
   border-radius: 5px;
   width: 300px;
   height: 65px;
   font-size: 200%;
+  cursor: pointer;
+  transition: all 0.3s ease-in 0s;
+  outline: 1px solid grey;
 }
 
 button:hover {
-  background-color: #fff1ce;
-  outline: 2px solid #88c6cf;
+  background-color: #ccf1ff;
+  border-radius: 20px;
+  color: rgb(5, 5, 5) !important;
 }
+
 </style>

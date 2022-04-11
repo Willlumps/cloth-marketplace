@@ -92,6 +92,6 @@ export default class Home extends Vue {
 }
 
 body {
-  background-color: #86c6f4;
+  background-color: #ccf1ff;
 }
 </style>
