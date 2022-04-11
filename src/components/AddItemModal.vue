@@ -173,6 +173,9 @@ export default {
   width: 68%;
   text-align: left;
   padding-left: 5px;
+  border-radius: 5px;
+  height: 25px;
+  font-size: 15px;
 }
 
 #field textarea {
@@ -183,6 +186,9 @@ export default {
   max-height: 700px;
   text-align: left;
   padding-left: 5px;
+  border-radius: 5px;
+  font-size: 15px;
+  outline: 1px solid black;
 }
 
 h1 {
@@ -209,6 +215,7 @@ button {
   z-index: 1;
   width: 125px;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 button:hover:before {

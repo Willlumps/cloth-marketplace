@@ -53,8 +53,7 @@ export default class Header extends Vue {
   border-bottom: 1px solid black;
 }
 
-#left,
-#right {
+#left, #right {
   width: 50%;
 }
 
