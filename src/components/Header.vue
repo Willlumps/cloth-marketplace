@@ -5,8 +5,9 @@
       <button id="btn" @click="search">GO</button>
     </div>
     <div id="right">
+      <button id="btn" @click="logout">LOGOUT</button>
       <button id="btn">MY WISHLIST</button>
-      <button id="btn">MARKETPLACE</button>
+      <button id="btn" @click="goToProfile">PROFILE</button>
       <button id="btn" @click="$emit('add-item')">ADD ITEMS</button>
     </div>
   </div>
@@ -20,6 +21,14 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 })
 export default class Header extends Vue {
   searchinput = "";
+
+  goToProfile() {
+    this.$router.push({ name: "profile" });
+  }
+
+  logout() {
+    this.$router.push({ name: "login" });
+  }
 
   search() {
     this.$emit("search-term", this.searchinput);
