@@ -69,14 +69,16 @@ export default class Gallery extends Vue {
 }
 
 #gallery {
-  display: table;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 #gallery-item {
   float: left;
   background: #f9f9f9;
-  width: 21%;
+  width: 13em;
   margin: 1%;
   padding: 1%;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
@@ -88,15 +90,14 @@ export default class Gallery extends Vue {
   transform: scale(1.05);
 }
 
-#galler-item img {
+#gallery-item img {
   width: 100%;
 }
 
-img {
+#gallery-item img {
   object-fit: scale-down;
-  border: 2px solid black;
+  outline: 2px solid black;
   border-radius: 5px;
-  padding: 3px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
 </style>

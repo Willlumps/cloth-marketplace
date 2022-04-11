@@ -2,9 +2,7 @@
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop="">
       <div id="left">
-        <div class="item-image">
-          <img v-bind:src="item.img" class="scale" />
-        </div>
+        <img v-bind:src="item.img" class="scale" />
       </div>
       <div class="item-info">
         <div class="primary-info">
@@ -58,21 +56,44 @@ div {
 }
 
 .modal {
-  width: 1000px;
-  height: 575px;
+  width: 70%;
+  max-width: 1000px;
+  height: 45%;
   background-color: white;
   border-radius: 10px;
   margin-top: 10%;
   color: #555555;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #left {
-  width: 600px;
-  height: 650px;
+  width: 60%;
+  height: 100%;
+}
+
+.item-info {
+  width: 39%;
+  height: 85%;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-left: 2px solid black;
+}
+
+.item-info h2 {
+  margin-left: 15px;
+  text-align: left;
+}
+
+.item-info p {
+  margin-left: 15px;
+  margin-top: 10px;
+  text-align: left;
 }
 
 .primary-info {
-  width: 400px;
+  width: 100%;
   height: 125px;
   background-color: white;
   border-top-right-radius: 10px;
@@ -96,7 +117,7 @@ div {
 }
 
 .location {
-  width: 400px;
+  width: 100%;
   height: 25px;
   display: float;
 }
@@ -109,12 +130,6 @@ div {
   padding-right: 5px;
 }
 
-.item-image {
-  width: 598px;
-  height: 575px;
-  border-right: 2px solid black;
-}
-
 img {
   object-fit: scale-down;
 }
@@ -123,34 +138,16 @@ img {
   background-color: #ccf1ff;
   border: 1px solid grey;
   border-radius: 7px;
-  max-width: 550px;
-  max-height: 540px;
+  width: 80%;
+  height: 79%;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
-  padding: 5px;
+  padding: 2%;
 }
 
-.item-info {
-  width: 400px;
-  height: 500px;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-.item-info h2 {
-  margin-left: 15px;
-  text-align: left;
-}
-
-.item-info p {
-  margin-left: 15px;
+#left img {
   margin-top: 10px;
-  text-align: left;
-}
-
-.item-image img {
-  width: 580px;
-  height: 555px;
-  margin-top: 10px;
+  width: 92%;
+  height: 92%;
 }
 
 ul {
@@ -172,13 +169,15 @@ p {
 }
 
 .buy-btn {
-  width: 400px;
+  width: 39%;
+  height: 20%;
+  border-left: 2px solid black;
 }
 
-button {
+.buy-btn button {
   background-color: transparent;
   border-radius: 5px;
-  width: 300px;
+  width: 75%;
   height: 65px;
   font-size: 200%;
   cursor: pointer;
@@ -186,7 +185,7 @@ button {
   outline: 1px solid grey;
 }
 
-button:hover {
+.buy-btn button:hover {
   background-color: #ccf1ff;
   border-radius: 20px;
   color: rgb(5, 5, 5) !important;

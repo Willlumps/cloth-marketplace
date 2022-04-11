@@ -96,9 +96,12 @@ export default class Header extends Vue {
 
 #btn {
   height: 45px;
-  width: 150px;
+  width: 15%;
   font-size: 12px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease-in 0s;
