@@ -23,6 +23,7 @@
       @close-modal="toggleModal"
       v-bind:item="this.modalItem"
       v-bind:location="this.location"
+      :isProfile="Boolean(isProfile)"
     />
   </div>
 </template>
@@ -41,6 +42,7 @@ export default class Gallery extends Vue {
   @Prop() location!: string;
   @Prop() searchMatch!: boolean;
   @Prop() title!: string;
+  @Prop() isProfile!: boolean;
   showModal = false;
   modalItem = {};
 

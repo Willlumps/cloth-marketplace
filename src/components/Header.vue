@@ -68,6 +68,7 @@ export default class Header extends Vue {
 #search-site {
   margin-left: 15px;
   width: 50%;
+  max-width: 500px;
   font-size: 25px;
   text-align: left;
   border-radius: 5px;
@@ -97,6 +98,7 @@ export default class Header extends Vue {
 #btn {
   height: 45px;
   width: 15%;
+  max-width: 175px;
   font-size: 12px;
   font-weight: 600;
   overflow: hidden;
@@ -112,6 +114,8 @@ export default class Header extends Vue {
   background-color: #ccf1ff;
   border-radius: 60px;
   color: rgb(5, 5, 5) !important;
+  white-space: normal;
+  overflow: visible;
 }
 
 #left #btn:hover {

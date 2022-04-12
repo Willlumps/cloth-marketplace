@@ -59,7 +59,7 @@ export default class Login extends Vue {
 
   flipContainer() {
     const card = document.querySelector(".container");
-    card!.classList.toggle('flip');
+    card?.classList.toggle('flip');
   }
 
   login() {

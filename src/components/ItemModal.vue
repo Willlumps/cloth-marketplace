@@ -26,8 +26,12 @@
           </ul>
         </div>
       </div>
-      <div class="buy-btn">
+      <div v-if="!isProfile" class="home-btn">
         <button @click="buy">Buy Now!</button>
+      </div>
+      <div v-if="isProfile" class="profile-btns">
+        <button @click="$emit('close-modal')">Close</button>
+        <button @click="removeListing">Remove</button>
       </div>
     </div>
   </div>
@@ -35,7 +39,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { buyItem } from "../get-items";
+import { buyItem, removeItem } from "../get-items";
 import { Item } from "../datatypes";
 
 @Component({
@@ -47,10 +51,17 @@ import { Item } from "../datatypes";
 export default class ItemModal extends Vue {
   @Prop() item!: Item;
   @Prop() location!: string;
-  buttonText = "";
+  @Prop() isProfile!: boolean;
 
   async buy() {
-    await buyItem(this.item.id);
+    if (!this.isProfile) {
+      await buyItem(this.item.id);
+    }
+    this.$emit('close-modal');
+  }
+
+  async removeListing() {
+    await removeItem(this.item.id);
     this.$emit('close-modal');
   }
 }
@@ -185,24 +196,34 @@ p {
   margin: 20px 0;
 }
 
-.buy-btn {
+.home-btn, .profile-btns {
   width: 39%;
   height: 20%;
   border-left: 2px solid black;
 }
 
-.buy-btn button {
-  background-color: transparent;
-  border-radius: 5px;
+.home-btn button {
   width: 75%;
   height: 65px;
+}
+
+.profile-btns button {
+  width: 45%;
+  height: 50px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.home-btn button, .profile-btns button {
+  background-color: transparent;
+  border-radius: 5px;
   font-size: 200%;
   cursor: pointer;
   transition: all 0.3s ease-in 0s;
   outline: 1px solid grey;
 }
 
-.buy-btn button:hover {
+.home-btn button:hover, .profile-btns button:hover {
   background-color: #ccf1ff;
   border-radius: 20px;
   color: rgb(5, 5, 5) !important;

@@ -4,7 +4,7 @@
       <Header @add-item="toggleAddItemModal" @search-term="searchItem" @refresh-gallery="refreshItems" />
     </div>
     <div>
-      <Gallery :key="refreshGallery" :galleryItems="items" :location="location" :searchMatch="emptySearch" />
+      <Gallery :galleryItems="items" :location="location" :searchMatch="emptySearch" :isProfile="false" />
     </div>
     <AddItemModal
       v-show="showAddItemModal"
@@ -39,8 +39,7 @@ import {
 })
 export default class Home extends Vue {
   showAddItemModal = false;
-  refreshGallery = 0;
-  items: any[] = [];
+  items: Item[] = [];
   location = "";
   emptySearch = false;
 
@@ -53,7 +52,7 @@ export default class Home extends Vue {
 
   async itemListener() {
     let q = query(collection(db, "items"));
-    const u = onSnapshot(q, async () => {
+    onSnapshot(q, async () => {
       this.items = await getAllItems();
     });
   }
@@ -69,12 +68,12 @@ export default class Home extends Vue {
 
   async searchItem(value: string) {
     const searchTerms = value.split(" ");
-    const itemList: any[] = [];
+    const itemList: Item[] = [];
 
     const itemCollection = collection(db, "items");
     await getDocs(itemCollection).then((qs: QuerySnapshot) => {
       qs.forEach((qd: QueryDocumentSnapshot) => {
-        itemList.push(qd.data());
+        itemList.push(qd.data() as Item);
       });
     });
     const filteredItems = itemList.filter((data) => data.tags.some((r: string) => searchTerms.includes(r)));

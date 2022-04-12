@@ -3,8 +3,8 @@
     <Header/>
     <h1>I'm a profile</h1>
     <button @click="goHome">Temp Home Button</button>
-    <Gallery :key="refreshSaleGallery" :galleryItems="itemsForSale" title="For Sale" />
-    <Gallery :key="refreshSoldGallery" :galleryItems="itemsSold" title="Items Sold" />
+    <Gallery :galleryItems="itemsForSale" :location="location" title="For Sale" :isProfile="true" />
+    <Gallery :galleryItems="itemsSold" :location="location" title="Items Sold" :isProfile="true" />
   </div>
 </template>
 
@@ -14,7 +14,8 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
-import { getAllItems, getPersonalItems } from "../get-items";
+import { getPersonalItems } from "../get-items";
+import { Item } from "../datatypes";
 import { db } from "../myconfig";
 
 @Component({
@@ -26,20 +27,21 @@ import { db } from "../myconfig";
 })
 export default class Profile extends Vue {
   showAddItemModal = false;
-  refreshSaleGallery = 1;
-  refreshSoldGallery = -1;
-  itemsForSale: any[] = [];
-  itemsSold: any[] = [];
+  itemsForSale: Item[] = [];
+  itemsSold: Item[] = [];
   emptySearch = false;
+  location = "";
 
   async mounted() {
     this.itemsForSale = await getPersonalItems("user1", false);
     this.itemsSold = await getPersonalItems("user1", true);
+    this.location = "Grand Rapids";
+    this.itemListener();
   }
 
   async itemListener() {
     let q = query(collection(db, "items"));
-    const u = onSnapshot(q, async () => {
+    onSnapshot(q, async () => {
       this.itemsForSale = await getPersonalItems("user1", false);
       this.itemsSold = await getPersonalItems("user1", true);
     });
