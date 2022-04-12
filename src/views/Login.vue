@@ -22,7 +22,7 @@
             <input name="password" v-model="password" type="password" placeholder="Password">
           </div>
           <div id=login-buttons>
-            <button>Login</button>
+            <button :disabled="!validateLogin" @click="signInUser">Login</button>
             <p>- or -</p>
             <button @click="flipContainer" id="reg">Register</button>
           </div>
@@ -38,7 +38,7 @@
             <input name="location" v-model="location" type="text" placeholder="Location">
           </div>
           <div id=login-buttons>
-            <button :disabled="!isValidInput" @click="register">Register</button>
+            <button :disabled="!validateRegistration" @click="register">Register</button>
             <p>- or -</p>
             <button @click="flipContainer">Go Back</button>
           </div>
@@ -64,6 +64,7 @@ import {
   getAuth,
   UserCredential,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 
@@ -76,11 +77,16 @@ export default class Login extends Vue {
   message = "";
   auth: Auth | null = null;
 
-  get isValidInput(): boolean {
+  get validateRegistration(): boolean {
     return this.email.length > 0 &&
            this.password.length > 0 &&
            this.location.length > 0 &&
            this.username.length > 0;
+  }
+
+  get validateLogin(): boolean {
+    return this.email.length > 0 &&
+           this.password.length > 0;
   }
 
   mounted(): void {
@@ -95,7 +101,7 @@ export default class Login extends Vue {
   async addUser(uid: string) {
     await setDoc(doc(db, "users", uid), {
       name: this.username.toLocaleLowerCase(),
-      location: this.location.toLocaleLowerCase(),
+      location: this.location,
       balance: 25.00,
       id: uid,
     });
@@ -131,6 +137,17 @@ export default class Login extends Vue {
       })
       .catch((err: any) => {
         // TODO: parse error messages?
+        this.showMessage(`Unable to create account ${err}`);
+      });
+  }
+
+  signInUser(): void {
+    console.log(this.email, this.password);
+    signInWithEmailAndPassword(this.auth!, this.email, this.password)
+      .then(async (cr: UserCredential) => {
+        this.$router.push({ name: "home" });
+      })
+      .catch((err: any) => {
         this.showMessage(`Unable to create account ${err}`);
       });
   }

@@ -14,9 +14,16 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
-import { getPersonalItems } from "../get-items";
+import { getPersonalItems, getUserInfoById } from "../get-items";
 import { Item } from "../datatypes";
 import { db } from "../main";
+import {
+  getAuth,
+  Auth,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+
 
 @Component({
   components: {
@@ -31,19 +38,33 @@ export default class Profile extends Vue {
   itemsSold: Item[] = [];
   emptySearch = false;
   location = "";
+  username = "";
+  auth: Auth | null = null;
 
   async mounted() {
-    this.itemsForSale = await getPersonalItems("user1", false);
-    this.itemsSold = await getPersonalItems("user1", true);
-    this.location = "Grand Rapids";
-    this.itemListener();
+    this.auth = getAuth();
+    onAuthStateChanged(this.auth, async (user) => {
+      if (user) {
+        let info = await getUserInfoById(user.uid);
+        console.log(info);
+        console.log(info![0]);
+        console.log(info![1]);
+        this.username = info![0];
+        this.location = info![1];
+        this.itemsForSale = await getPersonalItems(this.username, false);
+        this.itemsSold = await getPersonalItems(this.username, true);
+        this.itemListener(this.username);
+      } else {
+        this.$router.push({ name: "login"});
+      }
+    });
   }
 
-  async itemListener() {
+  async itemListener(user: string) {
     let q = query(collection(db, "items"));
     onSnapshot(q, async () => {
-      this.itemsForSale = await getPersonalItems("user1", false);
-      this.itemsSold = await getPersonalItems("user1", true);
+      this.itemsForSale = await getPersonalItems(user, false);
+      this.itemsSold = await getPersonalItems(user, true);
     });
   }
 

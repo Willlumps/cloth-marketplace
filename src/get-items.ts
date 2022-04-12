@@ -29,6 +29,19 @@ async function getAllItems() {
   return items;
 }
 
+async function getUserInfoById(uid: string): Promise<string[]> {
+  const docRef = doc(db, "users", uid);
+  const docSnap = await getDoc(docRef);
+  const res = [];
+
+  if (docSnap.exists()) {
+    console.log("hey");
+    res.push(docSnap.data().name);
+    res.push(docSnap.data().location);
+  }
+  return res;
+}
+
 async function getPersonalItems(user: string, sold: boolean) {
   const items: Item[] = [];
   const itemCollection = collection(db, "items");
@@ -49,8 +62,6 @@ async function buyItem(id: string) {
   await updateDoc(ref, {
     sold: true
   });
-
-  console.log();
 }
 
 async function removeItem(id: string) {
@@ -113,4 +124,4 @@ async function upload(file: any) {
   });
 }
 
-export { buyItem, getAllItems, getPersonalItems, getLocationByUser, upload, removeItem };
+export { buyItem, getAllItems, getPersonalItems, getLocationByUser, upload, removeItem, getUserInfoById };

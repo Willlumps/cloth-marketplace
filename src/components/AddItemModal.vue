@@ -62,6 +62,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../main";
 
 export default {
+  props: [ "username" ],
   data: function () {
     return {
       name: "",
@@ -87,7 +88,7 @@ export default {
         name: this.name,
         price: parseInt(this.price, 10).toFixed(2),
         tags: tagList,
-        user: "user1",
+        user: this.username,
         id: docName,
         sold: false,
       }).then(() => {
@@ -106,6 +107,7 @@ export default {
         this.hasImage()
       );
     },
+
     closeModal() {
       this.isSubmitting = false;
       this.$emit("close-modal");

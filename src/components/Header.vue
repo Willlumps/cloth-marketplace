@@ -15,18 +15,29 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
+import {
+  Auth,
+  getAuth,
+  signOut,
+} from "firebase/auth";
 
 @Component({
   components: {},
 })
 export default class Header extends Vue {
   searchinput = "";
+  auth: Auth | null = null;
+
+  mounted(): void {
+    this.auth = getAuth();
+  }
 
   goToProfile() {
     this.$router.push({ name: "profile" });
   }
 
-  logout() {
+  async logout() {
+    await signOut(this.auth!);
     this.$router.push({ name: "login" });
   }
 

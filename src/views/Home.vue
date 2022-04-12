@@ -9,6 +9,7 @@
     <AddItemModal
       v-show="showAddItemModal"
       @close-modal="toggleAddItemModal"
+      :username="username"
     />
   </div>
 </template>
@@ -18,7 +19,7 @@ import { Component, Vue } from "vue-property-decorator";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
-import { getAllItems } from "../get-items";
+import { getAllItems, getUserInfoById } from "../get-items";
 import { Item } from "../datatypes";
 import { db } from "../main";
 import {
@@ -29,6 +30,11 @@ import {
   QuerySnapshot,
   query,
 } from "firebase/firestore";
+import {
+  getAuth,
+  Auth,
+  onAuthStateChanged,
+} from "firebase/auth";
 
 @Component({
   components: {
@@ -38,16 +44,26 @@ import {
   },
 })
 export default class Home extends Vue {
+  auth: Auth | null = null;
   showAddItemModal = false;
   items: Item[] = [];
   location = "";
+  username = "";
   emptySearch = false;
 
   async mounted() {
-    this.items = await getAllItems();
-    // TODO: Get location from user after authentication
-    this.location = "Grand Rapids";
-    this.itemListener();
+    this.auth = getAuth();
+    onAuthStateChanged(this.auth, async (user) => {
+      if (user) {
+        this.items = await getAllItems();
+        let info = await getUserInfoById(user.uid);
+        this.username = info![0];
+        this.location = info![1];
+        this.itemListener();
+      } else {
+        this.$router.push({ name: "login"});
+      }
+    });
   }
 
   async itemListener() {
