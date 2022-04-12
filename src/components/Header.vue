@@ -1,7 +1,12 @@
 <template>
   <div class="header">
     <div id="left">
-      <input v-model="searchinput" type="search" id="search-site" placeholder="Search..." />
+      <input
+        v-model="searchinput"
+        type="search"
+        id="search-site"
+        placeholder="Search..."
+      />
       <button id="btn" @click="search">GO</button>
     </div>
     <div id="right">
@@ -15,11 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import {
-  Auth,
-  getAuth,
-  signOut,
-} from "firebase/auth";
+import { Auth, getAuth, signOut } from "firebase/auth";
 
 @Component({
   components: {},
@@ -64,7 +65,8 @@ export default class Header extends Vue {
   border-bottom: 1px solid black;
 }
 
-#left, #right {
+#left,
+#right {
   width: 50%;
 }
 
@@ -134,6 +136,4 @@ export default class Header extends Vue {
   border-radius: 60px;
   color: rgb(5, 5, 5) !important;
 }
-
-
 </style>

@@ -1,10 +1,20 @@
 <template>
   <div id="profile">
-    <Header/>
+    <Header />
     <h1>I'm a profile</h1>
     <button @click="goHome">Temp Home Button</button>
-    <Gallery :galleryItems="itemsForSale" :location="location" title="For Sale" :isProfile="true" />
-    <Gallery :galleryItems="itemsSold" :location="location" title="Items Sold" :isProfile="true" />
+    <Gallery
+      :galleryItems="itemsForSale"
+      :location="location"
+      title="For Sale"
+      :isProfile="true"
+    />
+    <Gallery
+      :galleryItems="itemsSold"
+      :location="location"
+      title="Items Sold"
+      :isProfile="true"
+    />
   </div>
 </template>
 
@@ -17,13 +27,7 @@ import AddItemModal from "../components/AddItemModal.vue";
 import { getPersonalItems, getUserInfoById } from "../get-items";
 import { Item } from "../datatypes";
 import { db } from "../main";
-import {
-  getAuth,
-  Auth,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-
+import { getAuth, Auth, signOut, onAuthStateChanged } from "firebase/auth";
 
 @Component({
   components: {
@@ -55,7 +59,7 @@ export default class Profile extends Vue {
         this.itemsSold = await getPersonalItems(this.username, true);
         this.itemListener(this.username);
       } else {
-        this.$router.push({ name: "login"});
+        this.$router.push({ name: "login" });
       }
     });
   }

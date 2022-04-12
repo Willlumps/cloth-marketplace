@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <div id="title">
-      <img id="img" alt="save the planet" src="../assets/login-logo.webp">
+      <img id="img" alt="save the planet" src="../assets/login-logo.webp" />
       <h1>Company Name</h1>
     </div>
     <div id="logo">
@@ -9,7 +9,7 @@
       <h4>(Or not, I'm not a cop)</h4>
     </div>
     <button @click="login">Click Me</button>
-    <span id="msgbox" v-show="message.length > 0">{{message}}</span>
+    <span id="msgbox" v-show="message.length > 0">{{ message }}</span>
 
     <div class="container">
       <div class="flip-card">
@@ -17,12 +17,24 @@
           <div id="login-header">
             <h2>Login</h2>
           </div>
-          <div id=login-input>
-            <input name="email" v-model="email" type="text" placeholder="Email">
-            <input name="password" v-model="password" type="password" placeholder="Password">
+          <div id="login-input">
+            <input
+              name="email"
+              v-model="email"
+              type="text"
+              placeholder="Email"
+            />
+            <input
+              name="password"
+              v-model="password"
+              type="password"
+              placeholder="Password"
+            />
           </div>
-          <div id=login-buttons>
-            <button :disabled="!validateLogin" @click="signInUser">Login</button>
+          <div id="login-buttons">
+            <button :disabled="!validateLogin" @click="signInUser">
+              Login
+            </button>
             <p>- or -</p>
             <button @click="flipContainer" id="reg">Register</button>
           </div>
@@ -31,14 +43,36 @@
           <div id="login-header">
             <h2>Register</h2>
           </div>
-          <div id=login-input>
-            <input name="email" v-model="email" type="text" placeholder="Email">
-            <input name="username" v-model="username" type="text" placeholder="Username">
-            <input name="password" v-model="password" type="password" placeholder="Password">
-            <input name="location" v-model="location" type="text" placeholder="Location">
+          <div id="login-input">
+            <input
+              name="email"
+              v-model="email"
+              type="text"
+              placeholder="Email"
+            />
+            <input
+              name="username"
+              v-model="username"
+              type="text"
+              placeholder="Username"
+            />
+            <input
+              name="password"
+              v-model="password"
+              type="password"
+              placeholder="Password"
+            />
+            <input
+              name="location"
+              v-model="location"
+              type="text"
+              placeholder="Location"
+            />
           </div>
-          <div id=login-buttons>
-            <button :disabled="!validateRegistration" @click="register">Register</button>
+          <div id="login-buttons">
+            <button :disabled="!validateRegistration" @click="register">
+              Register
+            </button>
             <p>- or -</p>
             <button @click="flipContainer">Go Back</button>
           </div>
@@ -78,15 +112,16 @@ export default class Login extends Vue {
   auth: Auth | null = null;
 
   get validateRegistration(): boolean {
-    return this.email.length > 0 &&
-           this.password.length > 0 &&
-           this.location.length > 0 &&
-           this.username.length > 0;
+    return (
+      this.email.length > 0 &&
+      this.password.length > 0 &&
+      this.location.length > 0 &&
+      this.username.length > 0
+    );
   }
 
   get validateLogin(): boolean {
-    return this.email.length > 0 &&
-           this.password.length > 0;
+    return this.email.length > 0 && this.password.length > 0;
   }
 
   mounted(): void {
@@ -95,14 +130,14 @@ export default class Login extends Vue {
 
   flipContainer() {
     const card = document.querySelector(".container");
-    card?.classList.toggle('flip');
+    card?.classList.toggle("flip");
   }
 
   async addUser(uid: string) {
     await setDoc(doc(db, "users", uid), {
       name: this.username.toLocaleLowerCase(),
       location: this.location,
-      balance: 25.00,
+      balance: 25.0,
       id: uid,
     });
     console.log();
@@ -133,7 +168,9 @@ export default class Login extends Vue {
         await this.addUser(cr.user.uid);
         await signOut(this.auth!);
         this.flipContainer();
-        this.showMessage("Account successfully created. Please login to continue");
+        this.showMessage(
+          "Account successfully created. Please login to continue"
+        );
       })
       .catch((err: any) => {
         // TODO: parse error messages?
@@ -193,7 +230,8 @@ export default class Login extends Vue {
   transform: rotateY(180deg);
 }
 
-#loginpanel, #registerpanel {
+#loginpanel,
+#registerpanel {
   width: 350px;
   height: 350px;
   border: 2px solid grey;

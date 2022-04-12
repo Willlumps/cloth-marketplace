@@ -47,7 +47,6 @@ import { Item } from "../datatypes";
     ItemModal,
   },
 })
-
 export default class ItemModal extends Vue {
   @Prop() item!: Item;
   @Prop() location!: string;
@@ -57,12 +56,12 @@ export default class ItemModal extends Vue {
     if (!this.isProfile) {
       await buyItem(this.item.id);
     }
-    this.$emit('close-modal');
+    this.$emit("close-modal");
   }
 
   async removeListing() {
     await removeItem(this.item.id);
-    this.$emit('close-modal');
+    this.$emit("close-modal");
   }
 }
 </script>
@@ -196,7 +195,8 @@ p {
   margin: 20px 0;
 }
 
-.home-btn, .profile-btns {
+.home-btn,
+.profile-btns {
   width: 39%;
   height: 20%;
   border-left: 2px solid black;
@@ -214,7 +214,8 @@ p {
   margin-right: 5px;
 }
 
-.home-btn button, .profile-btns button {
+.home-btn button,
+.profile-btns button {
   background-color: transparent;
   border-radius: 5px;
   font-size: 200%;
@@ -223,10 +224,10 @@ p {
   outline: 1px solid grey;
 }
 
-.home-btn button:hover, .profile-btns button:hover {
+.home-btn button:hover,
+.profile-btns button:hover {
   background-color: #ccf1ff;
   border-radius: 20px;
   color: rgb(5, 5, 5) !important;
 }
-
 </style>

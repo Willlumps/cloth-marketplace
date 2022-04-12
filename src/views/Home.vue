@@ -1,10 +1,19 @@
 <template>
   <div id="app">
     <div>
-      <Header @add-item="toggleAddItemModal" @search-term="searchItem" @refresh-gallery="refreshItems" />
+      <Header
+        @add-item="toggleAddItemModal"
+        @search-term="searchItem"
+        @refresh-gallery="refreshItems"
+      />
     </div>
     <div>
-      <Gallery :galleryItems="items" :location="location" :searchMatch="emptySearch" :isProfile="false" />
+      <Gallery
+        :galleryItems="items"
+        :location="location"
+        :searchMatch="emptySearch"
+        :isProfile="false"
+      />
     </div>
     <AddItemModal
       v-show="showAddItemModal"
@@ -30,11 +39,7 @@ import {
   QuerySnapshot,
   query,
 } from "firebase/firestore";
-import {
-  getAuth,
-  Auth,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { getAuth, Auth, onAuthStateChanged } from "firebase/auth";
 
 @Component({
   components: {
@@ -61,7 +66,7 @@ export default class Home extends Vue {
         this.location = info![1];
         this.itemListener();
       } else {
-        this.$router.push({ name: "login"});
+        this.$router.push({ name: "login" });
       }
     });
   }
@@ -92,7 +97,9 @@ export default class Home extends Vue {
         itemList.push(qd.data() as Item);
       });
     });
-    const filteredItems = itemList.filter((data) => data.tags.some((r: string) => searchTerms.includes(r)));
+    const filteredItems = itemList.filter((data) =>
+      data.tags.some((r: string) => searchTerms.includes(r))
+    );
     if (filteredItems.length == 0) {
       this.emptySearch = true;
     } else {

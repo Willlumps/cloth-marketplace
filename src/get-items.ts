@@ -9,7 +9,12 @@ import {
   QuerySnapshot,
   DocumentSnapshot,
 } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { db, storage } from "./main";
 import { v4 as uuidv4 } from "uuid";
 import { Item } from "./datatypes";
@@ -60,7 +65,7 @@ async function getPersonalItems(user: string, sold: boolean) {
 async function buyItem(id: string) {
   const ref = doc(db, "items", id);
   await updateDoc(ref, {
-    sold: true
+    sold: true,
   });
 }
 
@@ -70,11 +75,13 @@ async function removeItem(id: string) {
 
   // Remove image from storage
   const imgRef = ref(storage, id + ".jpeg");
-  deleteObject(imgRef).then(() => {
-    console.log("Image successfully removed from Firebase Storage");
-  }).catch((error) => {
-    console.log("Error removing image: ", error);
-  });
+  deleteObject(imgRef)
+    .then(() => {
+      console.log("Image successfully removed from Firebase Storage");
+    })
+    .catch((error) => {
+      console.log("Error removing image: ", error);
+    });
 }
 
 async function getLocationByUser(user: string) {
@@ -124,4 +131,12 @@ async function upload(file: any) {
   });
 }
 
-export { buyItem, getAllItems, getPersonalItems, getLocationByUser, upload, removeItem, getUserInfoById };
+export {
+  buyItem,
+  getAllItems,
+  getPersonalItems,
+  getLocationByUser,
+  upload,
+  removeItem,
+  getUserInfoById,
+};

@@ -4,11 +4,7 @@
     <h2 v-if="searchMatch">No results :(</h2>
     <div id="gallery">
       <template v-for="item in this.galleryItems">
-        <div
-          v-bind:key="item.img"
-          id="gallery-item"
-          @click="displayInfo(item)"
-        >
+        <div v-bind:key="item.img" id="gallery-item" @click="displayInfo(item)">
           <img
             width="200px"
             height="200px"

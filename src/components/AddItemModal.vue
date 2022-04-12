@@ -62,7 +62,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../main";
 
 export default {
-  props: [ "username" ],
+  props: ["username"],
   data: function () {
     return {
       name: "",
