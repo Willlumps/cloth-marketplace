@@ -9,7 +9,6 @@
     <AddItemModal
       v-show="showAddItemModal"
       @close-modal="toggleAddItemModal"
-      @add-success="refresh"
     />
   </div>
 </template>
@@ -20,12 +19,15 @@ import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
 import { getAllItems } from "../get-items";
+import { Item } from "../datatypes";
 import { db } from "../myconfig";
 import {
   collection,
   getDocs,
+  onSnapshot,
   QueryDocumentSnapshot,
   QuerySnapshot,
+  query,
 } from "firebase/firestore";
 
 @Component({
@@ -46,16 +48,18 @@ export default class Home extends Vue {
     this.items = await getAllItems();
     // TODO: Get location from user after authentication
     this.location = "Grand Rapids";
+    this.itemListener();
+  }
+
+  async itemListener() {
+    let q = query(collection(db, "items"));
+    const u = onSnapshot(q, async () => {
+      this.items = await getAllItems();
+    });
   }
 
   async toggleAddItemModal() {
     this.showAddItemModal = !this.showAddItemModal;
-  }
-
-  async refresh() {
-    this.items = await getAllItems();
-    this.showAddItemModal = !this.showAddItemModal;
-    this.refreshGallery++;
   }
 
   async refreshItems() {

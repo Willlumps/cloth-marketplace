@@ -27,6 +27,20 @@ async function getAllItems() {
   return items;
 }
 
+async function getPersonalItems(user: string, sold: boolean) {
+  const items: any[] = [];
+  const itemCollection = collection(db, "items");
+
+  await getDocs(itemCollection).then((qs: QuerySnapshot) => {
+    qs.forEach((qd: QueryDocumentSnapshot) => {
+      if (qd.data().sold === sold && qd.data().user === user) {
+        items.push(qd.data());
+      }
+    });
+  });
+
+  return items;
+}
 
 async function buyItem(id: string) {
   const ref = doc(db, "items", id);

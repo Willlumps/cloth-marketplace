@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <h2>FEATURED ITEMS OR SOME SHIT IDK</h2>
+    <h2>{{ title }}</h2>
     <h2 v-if="searchMatch">No results :(</h2>
     <div id="gallery">
       <template v-for="item in this.galleryItems">
@@ -40,6 +40,7 @@ export default class Gallery extends Vue {
   @Prop() galleryItems!: object[];
   @Prop() location!: string;
   @Prop() searchMatch!: boolean;
+  @Prop() title!: string;
   showModal = false;
   modalItem = {};
 
@@ -72,7 +73,6 @@ export default class Gallery extends Vue {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 }
 
 #gallery-item {
@@ -80,7 +80,7 @@ export default class Gallery extends Vue {
   background: #f9f9f9;
   width: 13em;
   margin: 1%;
-  padding: 1%;
+  padding: 10px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   border-radius: 7px;
@@ -91,7 +91,8 @@ export default class Gallery extends Vue {
 }
 
 #gallery-item img {
-  width: 100%;
+  width: 95%;
+  padding: 5px;
 }
 
 #gallery-item img {
