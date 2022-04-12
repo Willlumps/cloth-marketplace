@@ -5,6 +5,7 @@
         @add-item="toggleAddItemModal"
         @search-term="searchItem"
         @refresh-gallery="refreshItems"
+        :auth="auth"
       />
     </div>
     <div>
@@ -19,6 +20,7 @@
       v-show="showAddItemModal"
       @close-modal="toggleAddItemModal"
       :username="username"
+      :location="location"
     />
   </div>
 </template>

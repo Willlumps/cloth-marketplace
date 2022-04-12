@@ -13,7 +13,7 @@
           </div>
           <div class="location">
             <img src="../assets/globe.png" />
-            <h3>{{ location }}</h3>
+            <h3>{{ item.location }}</h3>
           </div>
         </div>
         <div class="price"></div>
@@ -49,7 +49,6 @@ import { Item } from "../datatypes";
 })
 export default class ItemModal extends Vue {
   @Prop() item!: Item;
-  @Prop() location!: string;
   @Prop() isProfile!: boolean;
 
   async buy() {
@@ -117,11 +116,13 @@ div {
   margin-left: 15px;
   margin-top: 10px;
   text-align: left;
+  overflow: visible;
+  white-space: normal;
 }
 
 .primary-info {
   width: 100%;
-  height: 125px;
+  height: auto;
   background-color: white;
   border-top-right-radius: 10px;
   border-bottom: 2px solid grey;

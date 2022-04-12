@@ -2,16 +2,16 @@
   <div class="header">
     <div id="left">
       <input
+        v-if="Boolean(!isProfile)"
         v-model="searchinput"
         type="search"
         id="search-site"
         placeholder="Search..."
       />
-      <button id="btn" @click="search">GO</button>
+      <button v-if="Boolean(!isProfile)" id="btn" @click="search">GO</button>
     </div>
     <div id="right">
       <button id="btn" @click="logout">LOGOUT</button>
-      <button id="btn">MY WISHLIST</button>
       <button id="btn" @click="goToProfile">PROFILE</button>
       <button id="btn" @click="$emit('add-item')">ADD ITEMS</button>
     </div>
@@ -19,15 +19,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Auth, getAuth, signOut } from "firebase/auth";
 
 @Component({
   components: {},
 })
 export default class Header extends Vue {
+  @Prop() auth!: Auth;
+  @Prop() isProfile!: boolean;
   searchinput = "";
-  auth: Auth | null = null;
 
   mounted(): void {
     this.auth = getAuth();

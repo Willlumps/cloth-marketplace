@@ -62,7 +62,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../main";
 
 export default {
-  props: ["username"],
+  props: ["username", "location"],
   data: function () {
     return {
       name: "",
@@ -91,6 +91,7 @@ export default {
         user: this.username,
         id: docName,
         sold: false,
+        location: this.location,
       }).then(() => {
         console.log("Successfully Added Item");
         this.$emit("close-modal");

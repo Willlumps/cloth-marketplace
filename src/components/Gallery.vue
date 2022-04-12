@@ -18,7 +18,6 @@
       v-show="showModal"
       @close-modal="toggleModal"
       v-bind:item="this.modalItem"
-      v-bind:location="this.location"
       :isProfile="Boolean(isProfile)"
     />
   </div>
@@ -35,16 +34,11 @@ import ItemModal from "./ItemModal.vue";
 })
 export default class Gallery extends Vue {
   @Prop() galleryItems!: object[];
-  @Prop() location!: string;
   @Prop() searchMatch!: boolean;
   @Prop() title!: string;
   @Prop() isProfile!: boolean;
   showModal = false;
   modalItem = {};
-
-  mounted() {
-    // delete me
-  }
 
   displayInfo(item: object) {
     this.modalItem = item;

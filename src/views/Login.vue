@@ -5,12 +5,9 @@
       <h1>Company Name</h1>
     </div>
     <div id="logo">
-      <h1>Login to view the site</h1>
-      <h4>(Or not, I'm not a cop)</h4>
+      <h1>Please Login or Register to view the site.</h1>
     </div>
-    <button @click="login">Click Me</button>
     <span id="msgbox" v-show="message.length > 0">{{ message }}</span>
-
     <div class="container">
       <div class="flip-card">
         <div id="loginpanel">
@@ -168,6 +165,7 @@ export default class Login extends Vue {
         await this.addUser(cr.user.uid);
         await signOut(this.auth!);
         this.flipContainer();
+        this.resetForm();
         this.showMessage(
           "Account successfully created. Please login to continue"
         );
@@ -189,16 +187,19 @@ export default class Login extends Vue {
       });
   }
 
-  login() {
-    this.$router.push({ name: "home" });
-  }
-
   showMessage(txt: string) {
     this.message = txt;
     // The message will automatically disappear after 5 seconds
     setTimeout(() => {
       this.message = "";
     }, 5000);
+  }
+
+  resetForm() {
+    this.email = "";
+    this.password = "";
+    this.location = "";
+    this.username = "";
   }
 }
 </script>
@@ -216,6 +217,7 @@ export default class Login extends Vue {
   perspective: 1000px;
   margin: 0 auto;
   margin-bottom: 25px;
+  margin-top: 15px;
 }
 
 .flip-card {
