@@ -2,6 +2,7 @@ import {
   collection,
   getDocs,
   getDoc,
+  updateDoc,
   doc,
   QueryDocumentSnapshot,
   QuerySnapshot,
@@ -17,11 +18,23 @@ async function getAllItems() {
 
   await getDocs(itemCollection).then((qs: QuerySnapshot) => {
     qs.forEach((qd: QueryDocumentSnapshot) => {
-      items.push(qd.data());
+      if (qd.data().sold === false) {
+        items.push(qd.data());
+      }
     });
   });
 
   return items;
+}
+
+
+async function buyItem(id: string) {
+  const ref = doc(db, "items", id);
+  await updateDoc(ref, {
+    sold: true
+  });
+
+  console.log();
 }
 
 async function getLocationByUser(user: string) {
@@ -71,4 +84,4 @@ async function upload(file: any) {
   });
 }
 
-export { getAllItems, getLocationByUser, upload };
+export { buyItem, getAllItems, getPersonalItems, getLocationByUser, upload };

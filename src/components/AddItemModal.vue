@@ -88,9 +88,11 @@ export default {
         price: parseInt(this.price, 10).toFixed(2),
         tags: tagList,
         user: "user1",
+        id: docName,
+        sold: false,
       }).then(() => {
         console.log("Successfully Added Item");
-        this.$emit("add-success");
+        this.$emit("close-modal");
         this.resetForm();
       });
     },

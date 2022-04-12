@@ -27,16 +27,33 @@
         </div>
       </div>
       <div class="buy-btn">
-        <button @click="$emit('close-modal')">Buy Now!</button>
+        <button @click="buy">Buy Now!</button>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  props: ["item", "location"],
-};
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { buyItem } from "../get-items";
+import { Item } from "../datatypes";
+
+@Component({
+  components: {
+    ItemModal,
+  },
+})
+
+export default class ItemModal extends Vue {
+  @Prop() item!: Item;
+  @Prop() location!: string;
+  buttonText = "";
+
+  async buy() {
+    await buyItem(this.item.id);
+    this.$emit('close-modal');
+  }
+}
 </script>
 
 <style scoped>
