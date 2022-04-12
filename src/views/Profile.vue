@@ -16,7 +16,7 @@ import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
 import { getPersonalItems } from "../get-items";
 import { Item } from "../datatypes";
-import { db } from "../myconfig";
+import { db } from "../main";
 
 @Component({
   components: {

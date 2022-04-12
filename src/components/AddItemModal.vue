@@ -59,7 +59,7 @@
 <script>
 import { upload } from "../get-items";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../myconfig";
+import { db } from "../main";
 
 export default {
   data: function () {

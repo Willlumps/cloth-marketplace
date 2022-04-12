@@ -8,6 +8,8 @@
       <h1>Login to view the site</h1>
       <h4>(Or not, I'm not a cop)</h4>
     </div>
+    <button @click="login">Click Me</button>
+    <span id="msgbox" v-show="message.length > 0">{{message}}</span>
 
     <div class="container">
       <div class="flip-card">
@@ -16,8 +18,8 @@
             <h2>Login</h2>
           </div>
           <div id=login-input>
-            <input name="email" v-model="email" type="text" placeholder="Email...">
-            <input name="password" v-model="password" type="text" placeholder="Password...">
+            <input name="email" v-model="email" type="text" placeholder="Email">
+            <input name="password" v-model="password" type="password" placeholder="Password">
           </div>
           <div id=login-buttons>
             <button>Login</button>
@@ -30,40 +32,119 @@
             <h2>Register</h2>
           </div>
           <div id=login-input>
-            <input name="email" v-model="email" type="text" placeholder="Email...">
-            <input name="password" v-model="password" type="text" placeholder="Password...">
+            <input name="email" v-model="email" type="text" placeholder="Email">
+            <input name="username" v-model="username" type="text" placeholder="Username">
+            <input name="password" v-model="password" type="password" placeholder="Password">
+            <input name="location" v-model="location" type="text" placeholder="Location">
           </div>
           <div id=login-buttons>
-            <button>Register</button>
+            <button :disabled="!isValidInput" @click="register">Register</button>
             <p>- or -</p>
             <button @click="flipContainer">Go Back</button>
           </div>
         </div>
       </div>
     </div>
-    <button @click="login">Click Me</button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { db } from "../main";
+import {
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  QuerySnapshot,
+  QueryDocumentSnapshot,
+} from "firebase/firestore";
+import {
+  Auth,
+  getAuth,
+  UserCredential,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
-@Component({
-  components: {
-  },
-})
+@Component
 export default class Login extends Vue {
-  shouldRegister = false;
-  password = "";
   email = "";
+  password = "";
+  username = "";
+  location = "";
+  message = "";
+  auth: Auth | null = null;
+
+  get isValidInput(): boolean {
+    return this.email.length > 0 &&
+           this.password.length > 0 &&
+           this.location.length > 0 &&
+           this.username.length > 0;
+  }
+
+  mounted(): void {
+    this.auth = getAuth();
+  }
 
   flipContainer() {
     const card = document.querySelector(".container");
     card?.classList.toggle('flip');
   }
 
+  async addUser(uid: string) {
+    await setDoc(doc(db, "users", uid), {
+      name: this.username.toLocaleLowerCase(),
+      location: this.location.toLocaleLowerCase(),
+      balance: 25.00,
+      id: uid,
+    });
+    console.log();
+  }
+
+  async userExists(): Promise<boolean> {
+    let res = false;
+    const users = collection(db, "users");
+    await getDocs(users).then((qs: QuerySnapshot) => {
+      qs.forEach((qd: QueryDocumentSnapshot) => {
+        if (qd.data().name === this.username.toLocaleLowerCase()) {
+          res = true;
+        }
+      });
+    });
+    return res;
+  }
+
+  async register() {
+    const exists = await this.userExists();
+    if (exists) {
+      this.showMessage("Username already exists");
+      return;
+    }
+    createUserWithEmailAndPassword(this.auth!, this.email, this.password)
+      .then(async (cr: UserCredential) => {
+        // TODO: Email verification?
+        await this.addUser(cr.user.uid);
+        await signOut(this.auth!);
+        this.flipContainer();
+        this.showMessage("Account successfully created. Please login to continue");
+      })
+      .catch((err: any) => {
+        // TODO: parse error messages?
+        this.showMessage(`Unable to create account ${err}`);
+      });
+  }
+
   login() {
     this.$router.push({ name: "home" });
+  }
+
+  showMessage(txt: string) {
+    this.message = txt;
+    // The message will automatically disappear after 5 seconds
+    setTimeout(() => {
+      this.message = "";
+    }, 5000);
   }
 }
 </script>
@@ -107,6 +188,7 @@ export default class Login extends Vue {
 
 #registerpanel {
   transform: rotateY(180deg);
+  height: 450px;
 }
 
 #img {
