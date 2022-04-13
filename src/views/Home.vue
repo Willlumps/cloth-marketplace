@@ -118,8 +118,4 @@ export default class Home extends Vue {
   margin: 0px;
   text-align: center;
 }
-
-body {
-  /* background-color: #ccf1ff; */
-}
 </style>

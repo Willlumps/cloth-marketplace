@@ -55,12 +55,19 @@ export default class Gallery extends Vue {
 #container {
   max-width: 1000px;
   margin: 0 auto;
-  /* background: rgba(204, 241, 255, 0.8); */
   margin-top: 20px;
   margin-bottom: 20px;
   padding: 5px;
   border-radius: 15px;
-  border: 2px solid grey;
+  border: 2px solid black;
+}
+
+#container h2:first-child {
+  text-underline-offset: 2px;
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
 }
 
 #gallery {
@@ -71,11 +78,9 @@ export default class Gallery extends Vue {
 
 #gallery-item {
   float: left;
-  /* background: #f9f9f9; */
   width: 13em;
   margin: 1%;
   padding: 10px;
-  /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2); */
   cursor: pointer;
   border-radius: 7px;
 }
@@ -91,7 +96,7 @@ export default class Gallery extends Vue {
 
 #gallery-item img {
   object-fit: scale-down;
-  outline: 2px solid grey;
+  outline: 1px solid black;
   border-radius: 5px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }

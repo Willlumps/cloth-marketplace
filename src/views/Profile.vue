@@ -1,10 +1,14 @@
 <template>
   <div id="profile">
-    <Header :auth="auth" :isProfile="true" />
-    <h1>I'm a profile</h1>
-    <button @click="goHome">Temp Home Button</button>
+    <Header @add-item="toggleAddItemModal" :auth="auth" :isProfile="true" />
     <Gallery :galleryItems="itemsForSale" title="For Sale" :isProfile="true" />
     <Gallery :galleryItems="itemsSold" title="Items Sold" :isProfile="true" />
+    <AddItemModal
+      v-show="showAddItemModal"
+      @close-modal="toggleAddItemModal"
+      :username="username"
+      :location="location"
+    />
   </div>
 </template>
 
@@ -59,12 +63,8 @@ export default class Profile extends Vue {
     });
   }
 
-  async toggleAddItemModal() {
+  toggleAddItemModal() {
     this.showAddItemModal = !this.showAddItemModal;
-  }
-
-  goHome() {
-    this.$router.push({ name: "home" });
   }
 }
 </script>

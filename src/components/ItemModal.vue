@@ -85,7 +85,7 @@ div {
   width: 70%;
   max-width: 1000px;
   height: 45%;
-  background-color: white;
+  background-color: #eee;
   border-radius: 10px;
   margin-top: 10%;
   color: #555555;
@@ -102,9 +102,8 @@ div {
 .item-info {
   width: 39%;
   height: 85%;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   border-left: 2px solid black;
+  background-color: white;
 }
 
 .item-info h2 {
@@ -123,11 +122,18 @@ div {
 .primary-info {
   width: 100%;
   height: auto;
-  background-color: white;
   border-top-right-radius: 10px;
   border-bottom: 2px solid grey;
 }
 
+h1,
+h2 {
+  text-underline-offset: 5px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
+  font-style: italic;
+}
 .primary-info h1 {
   text-align: left;
   padding-left: 15px;
@@ -155,7 +161,7 @@ div {
   height: 20px;
   float: left;
   padding-left: 15px;
-  padding-right: 5px;
+  padding-right: 15px;
 }
 
 img {
@@ -163,7 +169,6 @@ img {
 }
 
 .scale {
-  background-color: #ccf1ff;
   border: 1px solid grey;
   border-radius: 7px;
   width: 80%;
@@ -188,7 +193,7 @@ li {
 }
 
 .tags {
-  padding-top: 25px;
+  padding-top: 15px;
 }
 
 p {
@@ -201,6 +206,12 @@ p {
   width: 39%;
   height: 20%;
   border-left: 2px solid black;
+  background-color: white;
+}
+
+button {
+  border: none;
+  outline: 2px solid #ccc;
 }
 
 .home-btn button {
@@ -221,14 +232,11 @@ p {
   border-radius: 5px;
   font-size: 200%;
   cursor: pointer;
-  transition: all 0.3s ease-in 0s;
   outline: 1px solid grey;
 }
 
 .home-btn button:hover,
 .profile-btns button:hover {
-  background-color: #ccf1ff;
-  border-radius: 20px;
-  color: rgb(5, 5, 5) !important;
+  box-shadow: 4px 4px 4px #ffa94d;
 }
 </style>

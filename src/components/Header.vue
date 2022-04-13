@@ -15,7 +15,10 @@
     </div>
     <div id="right">
       <button id="btn" @click="logout">LOGOUT</button>
-      <button id="btn" @click="goToProfile">PROFILE</button>
+      <button v-if="Boolean(!isProfile)" id="btn" @click="goToProfile">
+        PROFILE
+      </button>
+      <button v-if="Boolean(isProfile)" id="btn" @click="goHome">HOME</button>
       <button id="btn" @click="$emit('add-item')">ADD ITEMS</button>
     </div>
   </div>
@@ -41,6 +44,10 @@ export default class Header extends Vue {
     this.$router.push({ name: "profile" });
   }
 
+  goHome() {
+    this.$router.push({ name: "home" });
+  }
+
   async logout() {
     await signOut(this.auth!);
     this.$router.push({ name: "login" });
@@ -63,7 +70,7 @@ export default class Header extends Vue {
 .header {
   width: 100%;
   height: 75px;
-  background-color: #f9f9f9;
+  background-color: #eeeeee;
   display: flex;
   align-items: center;
   border-bottom: 1px solid black;
@@ -137,10 +144,11 @@ export default class Header extends Vue {
   transition: all 0.01s ease-in 0s;
   outline: 1px solid #ccc;
   border: none;
+  font-style: italic;
 }
 
 #btn:hover {
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 4px #ffa94d;
   white-space: normal;
   overflow: visible;
 }

@@ -40,7 +40,6 @@ async function getUserInfoById(uid: string): Promise<string[]> {
   const res = [];
 
   if (docSnap.exists()) {
-    console.log("hey");
     res.push(docSnap.data().name);
     res.push(docSnap.data().location);
   }

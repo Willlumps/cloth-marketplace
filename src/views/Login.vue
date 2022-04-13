@@ -2,7 +2,7 @@
   <div id="login">
     <div id="title">
       <img id="img" alt="save the planet" src="../assets/login-logo.webp" />
-      <h1>Company Name</h1>
+      <h1>Cloth Marketplace</h1>
     </div>
     <div id="logo">
       <h1>Please Login or Register to view the site.</h1>
@@ -284,6 +284,10 @@ export default class Login extends Vue {
   justify-content: center;
   font-size: 170%;
   font-family: "Dancing Script", cursive;
+  text-underline-offset: 5px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
 }
 
 #logo {

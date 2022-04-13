@@ -1,7 +1,7 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <form class="modal" @submit.prevent="addItemToGallery" @click.stop="">
-      <h1>List Item</h1>
+      <h1>Add Item</h1>
       <div id="field">
         <div id="left"><h3>Item Name</h3></div>
         <input
@@ -46,7 +46,7 @@
       </div>
       <div id="btns">
         <button type="button" class="add-button" @click="addItemToGallery">
-          Add Item!
+          Add Item
         </button>
         <button type="button" class="cancel-button" @click="closeModal">
           Cancel
@@ -147,6 +147,7 @@ export default {
 }
 
 .modal {
+  font-style: italic;
   width: 550px;
   max-width: 551px;
   height: 325px;
@@ -156,7 +157,7 @@ export default {
   color: #555555;
   display: table;
   overflow-y: auto;
-  border: solid 5px #ccc;
+  border: solid 5px grey;
 }
 
 #field {
@@ -170,7 +171,7 @@ export default {
 
 #left h3 {
   text-align: left;
-  text-underline-offset: 4px;
+  text-underline-offset: 2px;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: #ffa94d;
@@ -203,6 +204,10 @@ export default {
 h1 {
   margin-bottom: 15px;
   border-bottom: solid 3px grey;
+  text-underline-offset: 2px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
 }
 
 #btns {
@@ -213,11 +218,13 @@ h1 {
 }
 
 button {
+  background-color: white;
   padding: 0.75rem 1.25rem;
   border-radius: 15px;
   color: #333;
   text-transform: uppercase;
   font-size: 1rem;
+  font-style: italic;
   transition: all 0.1s;
   position: relative;
   overflow: hidden;
