@@ -19,13 +19,16 @@
       @close-modal="toggleModal"
       v-bind:item="this.modalItem"
       :isProfile="Boolean(isProfile)"
+      :isSelf="Boolean(isSelf)"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { useUserStore } from "@/stores/user";
 import ItemModal from "./ItemModal.vue";
+import { Item } from "../datatypes";
 
 @Component({
   components: {
@@ -37,10 +40,17 @@ export default class Gallery extends Vue {
   @Prop() searchMatch!: boolean;
   @Prop() title!: string;
   @Prop() isProfile!: boolean;
+  user: any;
+  isSelf = false;
   showModal = false;
   modalItem = {};
 
-  displayInfo(item: object) {
+  mounted() {
+    this.user = useUserStore();
+  }
+
+  displayInfo(item: Item) {
+    this.isSelf = (this.user.name === item.user) ? true : false;
     this.modalItem = item;
     this.toggleModal();
   }

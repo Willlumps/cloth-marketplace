@@ -27,7 +27,7 @@
         </div>
       </div>
       <div v-if="!isProfile" class="home-btn">
-        <button @click="buy">Buy Now!</button>
+        <button :disabled="isSelf"  @click="buy">Buy Now!</button>
       </div>
       <div v-if="isProfile" class="profile-btns">
         <button @click="$emit('close-modal')">Close</button>
@@ -39,6 +39,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { useUserStore } from "@/stores/user";
 import { buyItem, removeItem } from "../get-items";
 import { Item } from "../datatypes";
 
@@ -50,6 +51,12 @@ import { Item } from "../datatypes";
 export default class ItemModal extends Vue {
   @Prop() item!: Item;
   @Prop() isProfile!: boolean;
+  @Prop() isSelf!: boolean;
+  user: any;
+
+  mounted() {
+    this.user = useUserStore();
+  }
 
   async buy() {
     if (!this.isProfile) {

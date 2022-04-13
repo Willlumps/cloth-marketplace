@@ -17,7 +17,7 @@ import {
 } from "firebase/storage";
 import { db, storage } from "./main";
 import { v4 as uuidv4 } from "uuid";
-import { Item } from "./datatypes";
+import { Item, User } from "./datatypes";
 
 async function getAllItems() {
   const items: Item[] = [];
@@ -34,16 +34,20 @@ async function getAllItems() {
   return items;
 }
 
-async function getUserInfoById(uid: string): Promise<string[]> {
+async function getUser(uid: string): Promise<User> {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
-  const res = [];
+  let user: User = {balance: 0, id: "", location: "", name: ""};
 
   if (docSnap.exists()) {
-    res.push(docSnap.data().name);
-    res.push(docSnap.data().location);
+    user = {
+      balance: docSnap.data().balance,
+      id: docSnap.data().id,
+      location: docSnap.data().location,
+      name: docSnap.data().name,
+    };
   }
-  return res;
+  return user;
 }
 
 async function getPersonalItems(user: string, sold: boolean) {
@@ -137,5 +141,5 @@ export {
   getLocationByUser,
   upload,
   removeItem,
-  getUserInfoById,
+  getUser,
 };

@@ -81,6 +81,9 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Store } from "pinia";
+import { useUserStore } from "@/stores/user";
+import { getUser } from "../get-items";
 import { db } from "../main";
 import {
   collection,
@@ -177,9 +180,12 @@ export default class Login extends Vue {
   }
 
   signInUser(): void {
-    console.log(this.email, this.password);
+    const userStore = useUserStore();
     signInWithEmailAndPassword(this.auth!, this.email, this.password)
       .then(async (cr: UserCredential) => {
+        // Get user info and store in store
+        const user = await getUser(cr.user.uid);
+        userStore.setUser(user.balance, user.id, user.location, user.name);
         this.$router.push({ name: "home" });
       })
       .catch((err: any) => {

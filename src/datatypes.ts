@@ -8,4 +8,11 @@ type Item = {
   user: string;
 };
 
-export { Item };
+type User = {
+  balance: number;
+  id: string;
+  location: string;
+  name: string;
+};
+
+export { Item, User };

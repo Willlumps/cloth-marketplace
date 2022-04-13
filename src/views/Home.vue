@@ -27,10 +27,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { useUserStore } from "@/stores/user";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
-import { getAllItems, getUserInfoById } from "../get-items";
+import { getAllItems } from "../get-items";
 import { Item } from "../datatypes";
 import { db } from "../main";
 import {
@@ -57,15 +58,17 @@ export default class Home extends Vue {
   location = "";
   username = "";
   emptySearch = false;
+  user: any;
 
   async mounted() {
+    this.user = useUserStore();
     this.auth = getAuth();
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
         this.items = await getAllItems();
-        let info = await getUserInfoById(user.uid);
-        this.username = info![0];
-        this.location = info![1];
+        //let info = await getUserInfoById(user.uid);
+        this.username = this.user.name;
+        this.location = this.user.location;
         this.itemListener();
       } else {
         this.$router.push({ name: "login" });

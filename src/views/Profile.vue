@@ -14,11 +14,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { useUserStore } from "@/stores/user";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
-import { getPersonalItems, getUserInfoById } from "../get-items";
+import { getPersonalItems } from "../get-items";
 import { Item } from "../datatypes";
 import { db } from "../main";
 import { getAuth, Auth, onAuthStateChanged } from "firebase/auth";
@@ -38,14 +39,15 @@ export default class Profile extends Vue {
   location = "";
   username = "";
   auth: Auth | null = null;
+  user: any;
 
   async mounted() {
+    this.user = useUserStore();
     this.auth = getAuth();
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
-        let info = await getUserInfoById(user.uid);
-        this.username = info![0];
-        this.location = info![1];
+        this.username = this.user.name;
+        this.location = this.user.location;
         this.itemsForSale = await getPersonalItems(this.username, false);
         this.itemsSold = await getPersonalItems(this.username, true);
         this.itemListener(this.username);
