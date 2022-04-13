@@ -263,6 +263,13 @@ export default class Login extends Vue {
   border-bottom: 2px solid grey;
 }
 
+#login-header h2 {
+  text-underline-offset: 4px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
+}
+
 #login-input {
   margin-top: 25px;
 }
@@ -292,14 +299,12 @@ export default class Login extends Vue {
   height: 35px;
   margin: 5px;
   border-radius: 5px;
-  transition: all 0.5s ease-in 0s;
+  border: none;
+  outline: 2px solid #ccc;
 }
 
 #login-buttons button:hover {
-  background-color: #ccf1ff;
-  border-radius: 60px;
-  color: rgb(5, 5, 5) !important;
-  transition: all 0.5s ease-in 0s;
+  box-shadow: 4px 4px 4px #ffa94d;
 }
 
 #login-input input {
@@ -308,9 +313,5 @@ export default class Login extends Vue {
   font-size: 15px;
   margin: 5px;
   border-radius: 5px;
-}
-
-body {
-  background-color: #ccf1ff;
 }
 </style>

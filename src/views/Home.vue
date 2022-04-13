@@ -120,6 +120,6 @@ export default class Home extends Vue {
 }
 
 body {
-  background-color: #ccf1ff;
+  /* background-color: #ccf1ff; */
 }
 </style>

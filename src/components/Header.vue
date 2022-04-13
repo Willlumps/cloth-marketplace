@@ -10,6 +10,9 @@
       />
       <button v-if="Boolean(!isProfile)" id="btn" @click="search">GO</button>
     </div>
+    <div id="center">
+      <h1>Cloth Marketplace</h1>
+    </div>
     <div id="right">
       <button id="btn" @click="logout">LOGOUT</button>
       <button id="btn" @click="goToProfile">PROFILE</button>
@@ -66,9 +69,19 @@ export default class Header extends Vue {
   border-bottom: 1px solid black;
 }
 
+#center {
+  font-size: 170%;
+  font-family: "Dancing Script", cursive;
+  text-underline-offset: 5px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
+}
+
 #left,
+#center,
 #right {
-  width: 50%;
+  width: 33%;
 }
 
 #left {
@@ -88,7 +101,8 @@ export default class Header extends Vue {
   border-radius: 5px;
   float: left;
   padding: 10px 15px;
-  border-color: #86c6f4;
+  outline: 1px solid #ccc;
+  border: none;
 }
 
 #left #btn {
@@ -111,30 +125,23 @@ export default class Header extends Vue {
 
 #btn {
   height: 45px;
-  width: 15%;
+  width: 20%;
   max-width: 175px;
   font-size: 12px;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background: transparent;
+  background: white;
   cursor: pointer;
-  transition: all 0.3s ease-in 0s;
-  outline: 2px solid grey;
+  transition: all 0.01s ease-in 0s;
+  outline: 1px solid #ccc;
+  border: none;
 }
 
 #btn:hover {
-  background-color: #ccf1ff;
-  border-radius: 60px;
-  color: rgb(5, 5, 5) !important;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
   white-space: normal;
   overflow: visible;
-}
-
-#left #btn:hover {
-  background-color: #ccf1ff;
-  border-radius: 60px;
-  color: rgb(5, 5, 5) !important;
 }
 </style>

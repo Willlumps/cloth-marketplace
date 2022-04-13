@@ -150,13 +150,13 @@ export default {
   width: 550px;
   max-width: 551px;
   height: 325px;
-  background-color: #9ee7ff;
+  background-color: #eee;
   border-radius: 10px;
   margin-top: 10%;
   color: #555555;
   display: table;
   overflow-y: auto;
-  border: solid 5px #eee;
+  border: solid 5px #ccc;
 }
 
 #field {
@@ -170,6 +170,10 @@ export default {
 
 #left h3 {
   text-align: left;
+  text-underline-offset: 4px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
   margin-left: 15px;
 }
 
@@ -198,7 +202,7 @@ export default {
 
 h1 {
   margin-bottom: 15px;
-  border-bottom: solid 3px white;
+  border-bottom: solid 3px grey;
 }
 
 #btns {
@@ -214,48 +218,20 @@ button {
   color: #333;
   text-transform: uppercase;
   font-size: 1rem;
-  transition: all 0.3s;
+  transition: all 0.1s;
   position: relative;
   overflow: hidden;
   z-index: 1;
   width: 125px;
   margin-right: 10px;
   margin-bottom: 10px;
+  outline: 1px solid #ccc;
+  border: none;
 }
 
-button:hover:before {
-  width: 100%;
-}
-
-button:after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f9f9f9;
-  border-radius: 15px;
-  z-index: -2;
-}
-
-button:before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0%;
-  height: 100%;
-  transition: all 0.3s;
-  border-radius: 15px;
-  z-index: -1;
-}
-
-.add-button:before {
-  background-color: #b0ffd2;
-}
-
-.cancel-button:before {
-  background-color: #ffb0b0;
+button:hover {
+  box-shadow: 4px 4px 4px #ffa94d;
+  white-space: normal;
+  overflow: visible;
 }
 </style>

@@ -14,6 +14,6 @@
 }
 
 body {
-  background-color: #86c6f4;
+  /* background-color: #86c6f4; */
 }
 </style>
