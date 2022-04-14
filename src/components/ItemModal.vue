@@ -26,10 +26,11 @@
           </ul>
         </div>
       </div>
-      <div v-if="!isProfile" class="home-btn">
+      <div v-if="!isProfile" class="btns">
+        <button @click="$emit('close-modal')">Close</button>
         <button :disabled="isSelf"  @click="buy">Buy Now!</button>
       </div>
-      <div v-if="isProfile" class="profile-btns">
+      <div v-if="isProfile" class="btns">
         <button @click="$emit('close-modal')">Close</button>
         <button @click="removeListing">Remove</button>
       </div>
@@ -40,8 +41,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { useUserStore } from "@/stores/user";
-import { buyItem, removeItem } from "../get-items";
-import { Item } from "../datatypes";
+import { removeItem } from "../get-items";
+import { Item, User } from "../datatypes";
+import { db, storage } from "../main";
+import {
+  updateDoc,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 
 @Component({
   components: {
@@ -52,17 +59,54 @@ export default class ItemModal extends Vue {
   @Prop() item!: Item;
   @Prop() isProfile!: boolean;
   @Prop() isSelf!: boolean;
-  user: any;
+  user: User | null = null;
 
   mounted() {
     this.user = useUserStore();
   }
 
   async buy() {
-    if (!this.isProfile) {
-      await buyItem(this.item.id);
-    }
+    await this.buyItem(this.item.id);
     this.$emit("close-modal");
+  }
+
+  async buyItem(id: string) {
+    const ref = doc(db, "items", id);
+    const item = await getDoc(ref);
+    if (item.data()!.price > this.user!.balance) {
+      // NO BUY FOR YOU
+      // TODO: Alert them?
+      return;
+    }
+    this.creditSeller(item.data()!.user, item.data()!.price);
+    this.removeFunds(this.user!.id, item.data()!.price);
+    await updateDoc(ref, {
+      sold: true,
+    });
+  }
+
+  async creditSeller(id: string, price: number) {
+    const ref = doc(db, "users", id);
+    const user = await getDoc(ref);
+
+    if (user.exists()) {
+      const newBalance = parseFloat(user.data().balance) + price;
+      await updateDoc(ref, {
+        balance: newBalance,
+      });
+    }
+  }
+
+  async removeFunds(id: string, price: number) {
+    const ref = doc(db, "users", id);
+    const user = await getDoc(ref);
+
+    if (user.exists()) {
+      const newBalance = parseFloat(user.data().balance) - price;
+      await updateDoc(ref, {
+        balance: newBalance,
+      });
+    }
   }
 
   async removeListing() {
@@ -135,7 +179,7 @@ div {
 
 h1,
 h2 {
-  text-underline-offset: 5px;
+  text-underline-offset: 2px;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: #ffa94d;
@@ -208,8 +252,7 @@ p {
   margin: 20px 0;
 }
 
-.home-btn,
-.profile-btns {
+.btns {
   width: 39%;
   height: 20%;
   border-left: 2px solid black;
@@ -221,20 +264,15 @@ button {
   outline: 2px solid #ccc;
 }
 
-.home-btn button {
-  width: 75%;
-  height: 65px;
-}
-
-.profile-btns button {
+.btns button {
   width: 45%;
   height: 50px;
   margin-left: 5px;
   margin-right: 5px;
+  font-family: "Open Sans", sans-serif;
 }
 
-.home-btn button,
-.profile-btns button {
+.btns button {
   background-color: transparent;
   border-radius: 5px;
   font-size: 200%;
@@ -242,8 +280,7 @@ button {
   outline: 1px solid grey;
 }
 
-.home-btn button:hover,
-.profile-btns button:hover {
+.btns button:hover {
   box-shadow: 4px 4px 4px #ffa94d;
 }
 </style>

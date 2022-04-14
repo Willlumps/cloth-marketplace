@@ -83,7 +83,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Store } from "pinia";
 import { useUserStore } from "@/stores/user";
-import { getUser } from "../get-items";
+import { getUser, refreshStore } from "../get-items";
 import { db } from "../main";
 import {
   collection,
@@ -184,8 +184,9 @@ export default class Login extends Vue {
     signInWithEmailAndPassword(this.auth!, this.email, this.password)
       .then(async (cr: UserCredential) => {
         // Get user info and store in store
-        const user = await getUser(cr.user.uid);
-        userStore.setUser(user.balance, user.id, user.location, user.name);
+        // const user = await getUser(cr.user.uid);
+        // userStore.setUser(user.balance, user.id, user.location, user.name);
+        await refreshStore(cr.user.uid);
         this.$router.push({ name: "home" });
       })
       .catch((err: any) => {
@@ -270,7 +271,7 @@ export default class Login extends Vue {
 }
 
 #login-header h2 {
-  text-underline-offset: 4px;
+  text-underline-offset: 2px;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-decoration-color: #ffa94d;

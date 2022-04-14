@@ -77,7 +77,7 @@ export default class Header extends Vue {
 }
 
 #center {
-  font-size: 170%;
+  font-size: min(2vw, 170%);
   font-family: "Dancing Script", cursive;
   text-underline-offset: 5px;
   text-decoration: underline;
@@ -119,7 +119,7 @@ export default class Header extends Vue {
   padding: 17px 15px;
   border-radius: 5px;
   border: none;
-  width: 75px;
+  width: 15%;
 }
 
 #right button {

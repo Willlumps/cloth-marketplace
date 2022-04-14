@@ -70,6 +70,7 @@ export default class Gallery extends Vue {
   padding: 5px;
   border-radius: 15px;
   border: 2px solid black;
+  box-shadow: 4px 4px 4px grey;
 }
 
 #container h2:first-child {

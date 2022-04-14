@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia';
+import { getUser } from "../get-items";
+import { User } from "../datatypes";
 
 export const useUserStore = defineStore('user', {
-  state: () => {
+  state: (): User => {
     return {
       balance: 0,
       id: "",
@@ -9,6 +11,7 @@ export const useUserStore = defineStore('user', {
       name: "",
     }
   },
+  persist: true,
   actions: {
     setUser(balance: number, id: string, location: string, name: string) {
       this.balance = balance;

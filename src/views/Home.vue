@@ -1,12 +1,16 @@
 <template>
   <div id="app">
-    <div>
+    <div id="header">
       <Header
         @add-item="toggleAddItemModal"
         @search-term="searchItem"
         @refresh-gallery="refreshItems"
         :auth="auth"
       />
+    </div>
+    <div id="user">
+      <h1>Welcome Back,&nbsp;</h1><h1>{{ user.name }}</h1><h1>!</h1>
+      <h2>Available Balance: ${{ user.balance }}</h2>
     </div>
     <div>
       <Gallery
@@ -31,8 +35,8 @@ import { useUserStore } from "@/stores/user";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
-import { getAllItems } from "../get-items";
-import { Item } from "../datatypes";
+import { getAllItems, refreshStore } from "../get-items";
+import { Item, User } from "../datatypes";
 import { db } from "../main";
 import {
   collection,
@@ -41,6 +45,7 @@ import {
   QueryDocumentSnapshot,
   QuerySnapshot,
   query,
+  where
 } from "firebase/firestore";
 import { getAuth, Auth, onAuthStateChanged } from "firebase/auth";
 
@@ -58,18 +63,19 @@ export default class Home extends Vue {
   location = "";
   username = "";
   emptySearch = false;
-  user: any;
+  user: User | null = null;
 
   async mounted() {
-    this.user = useUserStore();
     this.auth = getAuth();
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
+        await refreshStore(user.uid);
+        this.user = useUserStore();
+        this.username = this.user!.name;
+        this.location = this.user!.location;
         this.items = await getAllItems();
-        //let info = await getUserInfoById(user.uid);
-        this.username = this.user.name;
-        this.location = this.user.location;
         this.itemListener();
+        this.balanceListener();
       } else {
         this.$router.push({ name: "login" });
       }
@@ -80,6 +86,15 @@ export default class Home extends Vue {
     let q = query(collection(db, "items"));
     onSnapshot(q, async () => {
       this.items = await getAllItems();
+    });
+  }
+
+  async balanceListener() {
+    let q = query(collection(db, "users"), where("id", "==", this.user!.id));
+    onSnapshot(q, async (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        this.user!.balance = doc.data().balance;
+      });
     });
   }
 
@@ -120,5 +135,31 @@ export default class Home extends Vue {
   padding: 0px;
   margin: 0px;
   text-align: center;
+}
+
+#header {
+  box-shadow: 4px 4px 4px grey;
+}
+#user {
+  margin: 0 auto;
+  max-width: 400px;
+  margin-top: 25px;
+  border: 2px solid black;
+  border-radius: 15px;
+  padding: 5px;
+  font-family: "Dancing Script", cursive;
+  box-shadow: 4px 4px 4px grey;
+}
+
+#user h1 {
+  display: inline-block;
+}
+
+#user h1:nth-child(2) {
+  text-underline-offset: 2px;
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
 }
 </style>

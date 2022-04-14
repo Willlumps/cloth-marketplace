@@ -1,3 +1,4 @@
+import { useUserStore } from "@/stores/user";
 import {
   collection,
   getDocs,
@@ -50,26 +51,25 @@ async function getUser(uid: string): Promise<User> {
   return user;
 }
 
-async function getPersonalItems(user: string, sold: boolean) {
+async function refreshStore(uid: string) {
+  const user: User = await getUser(uid);
+  const userStore = useUserStore();
+  userStore.setUser(user.balance, user.id, user.location, user.name);
+}
+
+async function getPersonalItems(uid: string, sold: boolean) {
   const items: Item[] = [];
   const itemCollection = collection(db, "items");
 
   await getDocs(itemCollection).then((qs: QuerySnapshot) => {
     qs.forEach((qd: QueryDocumentSnapshot) => {
-      if (qd.data().sold === sold && qd.data().user === user) {
+      if (qd.data().sold === sold && qd.data().user === uid) {
         items.push(qd.data() as Item);
       }
     });
   });
 
   return items;
-}
-
-async function buyItem(id: string) {
-  const ref = doc(db, "items", id);
-  await updateDoc(ref, {
-    sold: true,
-  });
 }
 
 async function removeItem(id: string) {
@@ -135,11 +135,11 @@ async function upload(file: any) {
 }
 
 export {
-  buyItem,
   getAllItems,
   getPersonalItems,
   getLocationByUser,
   upload,
   removeItem,
   getUser,
+  refreshStore,
 };
