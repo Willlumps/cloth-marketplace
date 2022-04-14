@@ -36,7 +36,7 @@ async function getAllItems() {
 async function getUser(uid: string): Promise<User> {
   const docRef = doc(db, "users", uid);
   const docSnap = await getDoc(docRef);
-  let user: User = {balance: 0, id: "", location: "", name: ""};
+  let user: User = { balance: 0, id: "", location: "", name: "" };
 
   if (docSnap.exists()) {
     user = {

@@ -82,16 +82,15 @@ export default class AddItemModal extends Vue {
     this.user = useUserStore();
   }
 
-  // TODO: Fix whatever the hell is going on here
   async addItemToGallery() {
     if (!this.validateInput()) {
       this.isSubmitting = true;
       return;
     }
-    const file = (document.getElementById("image") as HTMLInputElement).files![0];
+    const file = (document.getElementById("image") as HTMLInputElement)
+      .files![0];
     const uuid = uuidv4();
-    const imgURL= await upload(file, uuid);
-    // const test = await upload(file);
+    const imgURL = await upload(file, uuid);
     const tagList = this.tags.split(", ");
     console.log(this.price);
 
@@ -136,11 +135,10 @@ export default class AddItemModal extends Vue {
     (this.description = ""), (this.price = "");
     this.tags = "";
     this.isSubmitting = false;
-    let input = (document.getElementById("image") as HTMLInputElement);
+    let input = document.getElementById("image") as HTMLInputElement;
     input.value = "";
   }
 }
-
 </script>
 
 <style scoped>

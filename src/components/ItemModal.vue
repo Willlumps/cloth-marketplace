@@ -28,7 +28,7 @@
       </div>
       <div v-if="!isProfile" class="btns">
         <button @click="$emit('close-modal')">Close</button>
-        <button :disabled="isSelf"  @click="buy">Buy Now!</button>
+        <button :disabled="isSelf" @click="buy">Buy Now!</button>
       </div>
       <div v-if="isProfile" class="btns">
         <button @click="$emit('close-modal')">Close</button>
@@ -43,12 +43,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { useUserStore } from "@/stores/user";
 import { removeItem } from "../get-items";
 import { Item, User } from "../datatypes";
-import { db, storage } from "../main";
-import {
-  updateDoc,
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import { db } from "../main";
+import { updateDoc, getDoc, doc } from "firebase/firestore";
 
 @Component({
   components: {

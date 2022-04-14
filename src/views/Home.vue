@@ -9,13 +9,14 @@
       />
     </div>
     <div id="user">
-      <h1>Welcome Back,&nbsp;</h1><h1>{{ user.name }}</h1><h1>!</h1>
+      <h1>Welcome Back,&nbsp;</h1>
+      <h1>{{ user.name }}</h1>
+      <h1>!</h1>
       <h2>Available Balance: ${{ user.balance }}</h2>
     </div>
     <div>
       <Gallery
         :galleryItems="items"
-        :location="location"
         :searchMatch="emptySearch"
         :isProfile="false"
       />
@@ -31,12 +32,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { useUserStore } from "@/stores/user";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
-import { getAllItems, refreshStore } from "../get-items";
 import { Item, User } from "../datatypes";
+import { useUserStore } from "@/stores/user";
+import { getAllItems, refreshStore } from "../get-items";
 import { db } from "../main";
 import {
   collection,
@@ -45,7 +46,7 @@ import {
   QueryDocumentSnapshot,
   QuerySnapshot,
   query,
-  where
+  where,
 } from "firebase/firestore";
 import { getAuth, Auth, onAuthStateChanged } from "firebase/auth";
 
@@ -58,12 +59,12 @@ import { getAuth, Auth, onAuthStateChanged } from "firebase/auth";
 })
 export default class Home extends Vue {
   auth: Auth | null = null;
-  showAddItemModal = false;
+  user: User | null = null;
   items: Item[] = [];
+  showAddItemModal = false;
+  emptySearch = false;
   location = "";
   username = "";
-  emptySearch = false;
-  user: User | null = null;
 
   async mounted() {
     this.auth = getAuth();

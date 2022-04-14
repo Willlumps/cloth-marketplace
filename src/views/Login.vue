@@ -7,7 +7,9 @@
     <div id="logo">
       <h1>Please Login or Register to view the site.</h1>
     </div>
-    <span id="msgbox" v-show="message.length > 0">{{ message }}</span>
+    <div id="msgbox">
+      <span v-show="message.length > 0">{{ message }}</span>
+    </div>
     <div class="container">
       <div class="flip-card">
         <div id="loginpanel">
@@ -81,9 +83,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Store } from "pinia";
-import { useUserStore } from "@/stores/user";
-import { getUser, refreshStore } from "../get-items";
+import { refreshStore } from "../get-items";
 import { db } from "../main";
 import {
   collection,
@@ -173,24 +173,39 @@ export default class Login extends Vue {
           "Account successfully created. Please login to continue"
         );
       })
-      .catch((err: any) => {
-        // TODO: parse error messages?
-        this.showMessage(`Unable to create account ${err}`);
+      .catch((err) => {
+        const message = err.message;
+        switch(err.code) {
+          case "auth/invalid-email":
+          case "auth/email-already-in-use":
+            this.showMessage("Email/Username already in use");
+            break;
+          case "auth/weak-password":
+            this.showMessage("Error: Password is not strong enough");
+            break;
+          default:
+            this.showMessage(message);
+        }
       });
   }
 
   signInUser(): void {
-    const userStore = useUserStore();
     signInWithEmailAndPassword(this.auth!, this.email, this.password)
       .then(async (cr: UserCredential) => {
-        // Get user info and store in store
-        // const user = await getUser(cr.user.uid);
-        // userStore.setUser(user.balance, user.id, user.location, user.name);
         await refreshStore(cr.user.uid);
         this.$router.push({ name: "home" });
       })
-      .catch((err: any) => {
-        this.showMessage(`Unable to create account ${err}`);
+      .catch((err) => {
+        switch(err.code) {
+          case "auth/invalid-email":
+          case "auth/user-not-found":
+          case "auth/wrong-password":
+            this.showMessage("Invalid email/password");
+            break;
+          case "auth/user-disabled":
+            this.showMessage("Error: Account Disabled");
+            break;
+        }
       });
   }
 
@@ -212,6 +227,15 @@ export default class Login extends Vue {
 </script>
 
 <style>
+#msgbox {
+  height: 25px;
+}
+#msgbox span {
+  padding: 5px;
+  border-radius: 5px;
+  border: solid 1px red;
+}
+
 #login {
   max-width: 750px;
   margin: 0 auto;
@@ -325,4 +349,5 @@ export default class Login extends Vue {
   margin: 5px;
   border-radius: 5px;
 }
+
 </style>

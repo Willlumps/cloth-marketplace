@@ -3,6 +3,7 @@
     <div id="left">
       <input
         v-if="Boolean(!isProfile)"
+        v-on:keyup.enter="search"
         v-model="searchinput"
         type="search"
         id="search-site"
@@ -120,6 +121,7 @@ export default class Header extends Vue {
   border-radius: 5px;
   border: none;
   width: 15%;
+  max-width: 55px;
 }
 
 #right button {

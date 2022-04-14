@@ -28,7 +28,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { useUserStore } from "@/stores/user";
 import ItemModal from "./ItemModal.vue";
-import { Item } from "../datatypes";
+import { Item, User } from "../datatypes";
 
 @Component({
   components: {
@@ -40,7 +40,7 @@ export default class Gallery extends Vue {
   @Prop() searchMatch!: boolean;
   @Prop() title!: string;
   @Prop() isProfile!: boolean;
-  user: any;
+  user: User | null = null;
   isSelf = false;
   showModal = false;
   modalItem = {};
@@ -50,7 +50,7 @@ export default class Gallery extends Vue {
   }
 
   displayInfo(item: Item) {
-    this.isSelf = (this.user.name === item.user) ? true : false;
+    this.isSelf = this.user!.id === item.user ? true : false;
     this.modalItem = item;
     this.toggleModal();
   }
