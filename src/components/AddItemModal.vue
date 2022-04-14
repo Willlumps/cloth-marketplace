@@ -56,78 +56,91 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { useUserStore } from "@/stores/user";
 import { upload } from "../get-items";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../main";
+import { User } from "../datatypes";
+import { v4 as uuidv4 } from "uuid";
 
-export default {
-  props: ["username", "location"],
-  data: function () {
-    return {
-      name: "",
-      description: "",
-      price: 0,
-      tags: "",
-      isSubmitting: false,
-    };
-  },
-  methods: {
-    async addItemToGallery() {
-      if (!this.validateInput()) {
-        this.isSubmitting = true;
-        return;
-      }
-      const file = document.getElementById("image").files[0];
-      const [imgURL, docName] = await upload(file);
-      const tagList = this.tags.split(", ");
+@Component({
+  components: {},
+})
+export default class AddItemModal extends Vue {
+  @Prop() username!: string;
+  @Prop() location!: string;
+  name = "";
+  description = "";
+  price = "";
+  tags = "";
+  isSubmitting = false;
+  user: User | null = null;
 
-      await setDoc(doc(db, "items", docName.toString()), {
-        description: this.description,
-        img: imgURL,
-        name: this.name,
-        price: parseInt(this.price, 10).toFixed(2),
-        tags: tagList,
-        user: this.username,
-        id: docName,
-        sold: false,
-        location: this.location,
-      }).then(() => {
-        console.log("Successfully Added Item");
-        this.$emit("close-modal");
-        this.resetForm();
-      });
-    },
+  mounted() {
+    this.user = useUserStore();
+  }
 
-    validateInput() {
-      return (
-        this.name.length > 0 &&
-        this.description.length > 0 &&
-        this.price > 0 &&
-        this.tags.length > 0 &&
-        this.hasImage()
-      );
-    },
+  // TODO: Fix whatever the hell is going on here
+  async addItemToGallery() {
+    if (!this.validateInput()) {
+      this.isSubmitting = true;
+      return;
+    }
+    const file = (document.getElementById("image") as HTMLInputElement).files![0];
+    const uuid = uuidv4();
+    const imgURL= await upload(file, uuid);
+    // const test = await upload(file);
+    const tagList = this.tags.split(", ");
+    console.log(this.price);
 
-    closeModal() {
-      this.isSubmitting = false;
+    await setDoc(doc(db, "items", uuid.toString()), {
+      description: this.description,
+      img: imgURL,
+      name: this.name,
+      price: parseFloat(parseFloat(this.price).toFixed(2)),
+      tags: tagList,
+      user: this.user!.id,
+      id: uuid,
+      sold: false,
+      location: this.location,
+    }).then(() => {
+      console.log("Successfully Added Item");
       this.$emit("close-modal");
-    },
+      this.resetForm();
+    });
+  }
 
-    hasImage() {
-      return document.getElementById("image").value != "";
-    },
+  validateInput() {
+    return (
+      this.name.length > 0 &&
+      this.description.length > 0 &&
+      this.price.length > 0 &&
+      this.tags.length > 0 &&
+      this.hasImage()
+    );
+  }
 
-    resetForm() {
-      this.name = "";
-      (this.description = ""), (this.price = 0);
-      this.tags = "";
-      this.isSubmitting = false;
-      const input = document.getElementById("image");
-      input.value = "";
-    },
-  },
-};
+  closeModal() {
+    this.isSubmitting = false;
+    this.$emit("close-modal");
+  }
+
+  hasImage() {
+    return (document.getElementById("image") as HTMLInputElement).value != "";
+  }
+
+  resetForm() {
+    this.name = "";
+    (this.description = ""), (this.price = "");
+    this.tags = "";
+    this.isSubmitting = false;
+    let input = (document.getElementById("image") as HTMLInputElement);
+    input.value = "";
+  }
+}
+
 </script>
 
 <style scoped>

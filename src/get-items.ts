@@ -3,7 +3,6 @@ import {
   collection,
   getDocs,
   getDoc,
-  updateDoc,
   deleteDoc,
   doc,
   QueryDocumentSnapshot,
@@ -17,7 +16,6 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { db, storage } from "./main";
-import { v4 as uuidv4 } from "uuid";
 import { Item, User } from "./datatypes";
 
 async function getAllItems() {
@@ -99,14 +97,13 @@ async function getLocationByUser(user: string) {
   return location;
 }
 
-async function upload(file: any) {
+async function upload(file: any, uuid: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const metadata = {
       contentType: "image/jpeg",
     };
 
-    const img = uuidv4();
-    const uploadRef = ref(storage, `${img}.jpeg`);
+    const uploadRef = ref(storage, `${uuid}.jpeg`);
     const uploadTask = uploadBytesResumable(uploadRef, file, metadata);
 
     uploadTask.on(
@@ -126,8 +123,8 @@ async function upload(file: any) {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           console.log("File available at", downloadURL);
-          resolve([downloadURL, img]);
-          return [downloadURL, img];
+          resolve(downloadURL);
+          return downloadURL;
         });
       }
     );
