@@ -15,12 +15,14 @@
       <h1>Cloth Marketplace</h1>
     </div>
     <div id="right">
-      <button id="btn" @click="logout">LOGOUT</button>
-      <button v-if="Boolean(!isProfile)" id="btn" @click="goToProfile">
-        PROFILE
-      </button>
-      <button v-if="Boolean(isProfile)" id="btn" @click="goHome">HOME</button>
-      <button id="btn" @click="$emit('add-item')">ADD ITEMS</button>
+      <Dropdown
+        id="dropdown"
+        title="MENU"
+        @logout="logout"
+        @go-home="goHome"
+        @go-profile="goToProfile"
+        @add-item="addItem"
+      />
     </div>
   </div>
 </template>
@@ -28,9 +30,12 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Auth, getAuth, signOut } from "firebase/auth";
+import Dropdown from "./Dropdown.vue";
 
 @Component({
-  components: {},
+  components: {
+    Dropdown,
+  },
 })
 export default class Header extends Vue {
   @Prop() auth!: Auth;
@@ -39,6 +44,10 @@ export default class Header extends Vue {
 
   mounted(): void {
     this.auth = getAuth();
+  }
+
+  addItem() {
+    this.$emit("add-item");
   }
 
   goToProfile() {
@@ -96,8 +105,12 @@ export default class Header extends Vue {
   float: left;
 }
 
+#dropdown {
+  position: relative;
+}
+
 #right {
-  float: right;
+  position: relative;
 }
 
 #search-site {
@@ -122,14 +135,6 @@ export default class Header extends Vue {
   border: none;
   width: 15%;
   max-width: 55px;
-}
-
-#right button {
-  margin-right: 15px;
-  float: right;
-  padding: 16px 15px;
-  border-radius: 5px;
-  border: none;
 }
 
 #btn {
