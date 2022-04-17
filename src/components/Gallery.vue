@@ -1,6 +1,6 @@
 <template>
-  <div id="container">
-    <h2>{{ title }}</h2>
+  <div id="container" v-show="isActive" >
+    <slot></slot>
     <h2 v-if="searchMatch">No results :(</h2>
     <div id="gallery">
       <template v-for="item in this.galleryItems">
@@ -20,6 +20,7 @@
       v-bind:item="this.modalItem"
       :isProfile="Boolean(isProfile)"
       :isSelf="Boolean(isSelf)"
+      :sold="this.modalItem.sold"
     />
   </div>
 </template>
@@ -40,6 +41,7 @@ export default class Gallery extends Vue {
   @Prop() searchMatch!: boolean;
   @Prop() title!: string;
   @Prop() isProfile!: boolean;
+  isActive = true;
   user: User | null = null;
   isSelf = false;
   showModal = false;

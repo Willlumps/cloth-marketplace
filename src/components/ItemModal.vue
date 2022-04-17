@@ -28,11 +28,11 @@
       </div>
       <div v-if="!isProfile" class="btns">
         <button @click="$emit('close-modal')">Close</button>
-        <button :disabled="isSelf" @click="buy">Buy Now!</button>
+        <button :disabled="isSelf" @click="buy">Buy</button>
       </div>
       <div v-if="isProfile" class="btns">
         <button @click="$emit('close-modal')">Close</button>
-        <button @click="removeListing">Remove</button>
+        <button :disabled="sold" @click="removeListing">Remove</button>
       </div>
     </div>
   </div>
@@ -55,6 +55,7 @@ export default class ItemModal extends Vue {
   @Prop() item!: Item;
   @Prop() isProfile!: boolean;
   @Prop() isSelf!: boolean;
+  @Prop() sold!: boolean;
   user: User | null = null;
 
   mounted() {

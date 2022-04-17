@@ -70,6 +70,21 @@ async function getPersonalItems(uid: string, sold: boolean) {
   return items;
 }
 
+async function getPurchasedItems(uid: string) {
+  const items: Item[] = [];
+  const itemCollection = collection(db, "items");
+
+  await getDocs(itemCollection).then((qs: QuerySnapshot) => {
+    qs.forEach((qd: QueryDocumentSnapshot) => {
+      if (qd.data().sold === true && qd.data().buyer === uid) {
+        items.push(qd.data() as Item);
+      }
+    });
+  });
+
+  return items;
+}
+
 async function removeItem(id: string) {
   // Remove from firestore
   await deleteDoc(doc(db, "items", id));
@@ -139,4 +154,5 @@ export {
   removeItem,
   getUser,
   refreshStore,
+  getPurchasedItems,
 };

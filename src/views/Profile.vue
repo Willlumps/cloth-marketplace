@@ -6,8 +6,11 @@
     <div id="user">
       <h2>Available Balance: ${{ user.balance }}</h2>
     </div>
-    <Gallery :galleryItems="itemsForSale" title="For Sale" :isProfile="true" />
-    <Gallery :galleryItems="itemsSold" title="Items Sold" :isProfile="true" />
+    <Tabs>
+      <Gallery :galleryItems="itemsForSale" title="Items Listed" :isProfile="true" />
+      <Gallery :galleryItems="itemsSold" title="Items Sold" :isProfile="true" />
+      <Gallery :galleryItems="itemsPurchased" title="Items Purchased" :isProfile="true" />
+    </Tabs>
     <AddItemModal
       v-show="showAddItemModal"
       @close-modal="toggleAddItemModal"
@@ -24,7 +27,8 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
-import { getPersonalItems, refreshStore } from "../get-items";
+import Tabs from "../components/Tabs.vue";
+import { getPersonalItems, getPurchasedItems, refreshStore } from "../get-items";
 import { Item, User } from "../datatypes";
 import { db } from "../main";
 import { getAuth, Auth, onAuthStateChanged } from "firebase/auth";
@@ -34,12 +38,14 @@ import { getAuth, Auth, onAuthStateChanged } from "firebase/auth";
     Gallery,
     Header,
     AddItemModal,
+    Tabs,
   },
 })
 export default class Profile extends Vue {
   showAddItemModal = false;
   itemsForSale: Item[] = [];
   itemsSold: Item[] = [];
+  itemsPurchased: Item[] = [];
   emptySearch = false;
   location = "";
   username = "";
@@ -58,6 +64,7 @@ export default class Profile extends Vue {
         this.id = this.user!.id;
         this.itemsForSale = await getPersonalItems(this.id, false);
         this.itemsSold = await getPersonalItems(this.id, true);
+        this.itemsPurchased = await getPurchasedItems(this.id);
         this.itemListener(this.id);
         this.balanceListener();
       } else {
@@ -71,6 +78,7 @@ export default class Profile extends Vue {
     onSnapshot(q, async () => {
       this.itemsForSale = await getPersonalItems(user, false);
       this.itemsSold = await getPersonalItems(user, true);
+      this.itemsPurchased = await getPurchasedItems(user);
     });
   }
 
