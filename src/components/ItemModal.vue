@@ -41,10 +41,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { useUserStore } from "@/stores/user";
-import { removeItem } from "../get-items";
 import { Item, User } from "../datatypes";
-import { db } from "../main";
-import { updateDoc, getDoc, doc } from "firebase/firestore";
+import { db, storage } from "../main";
+import { updateDoc, getDoc, doc, deleteDoc } from "firebase/firestore";
+import { ref, deleteObject } from "firebase/storage";
 
 @Component({
   components: {
@@ -79,6 +79,7 @@ export default class ItemModal extends Vue {
     this.removeFunds(this.user!.id, item.data()!.price);
     await updateDoc(ref, {
       sold: true,
+      buyer: this.user!.id,
     });
   }
 
@@ -107,8 +108,23 @@ export default class ItemModal extends Vue {
   }
 
   async removeListing() {
-    await removeItem(this.item.id);
+    await this.removeItem(this.item.id);
     this.$emit("close-modal");
+  }
+
+  async removeItem(id: string) {
+    // Remove from firestore
+    await deleteDoc(doc(db, "items", id));
+
+    // Remove image from storage
+    const imgRef = ref(storage, id + ".jpeg");
+    deleteObject(imgRef)
+      .then(() => {
+        console.log("Image successfully removed from Firebase Storage");
+      })
+      .catch((error) => {
+        console.log("Error removing image: ", error);
+      });
   }
 }
 </script>

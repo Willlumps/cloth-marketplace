@@ -1,7 +1,14 @@
 <template>
   <div id="tab-wrapper">
     <ul class="tab-header">
-      <li :class="{tab__selected: (index == selectedIndex)}" v-for="(tab, index) in tabs" :key="tab.title" @click="selectTab(index)">{{ tab.title }}</li>
+      <li
+        :class="{ tab__selected: index == selectedIndex }"
+        v-for="(tab, index) in tabs"
+        :key="tab.title"
+        @click="selectTab(index)"
+      >
+        {{ tab.title }}
+      </li>
     </ul>
     <slot></slot>
   </div>
@@ -32,14 +39,13 @@ export default class Tabs extends Vue {
   selectTab(i: number) {
     this.selectedIndex = i;
     this.tabs.forEach((tab, index) => {
-      tab.isActive = (index === i)
-    })
+      tab.isActive = index === i;
+    });
   }
 }
 </script>
 
 <style scoped>
-
 #tab-wrapper {
   width: 100%;
   max-width: 1050px;
@@ -84,5 +90,4 @@ ul.tab-header > li.tab__selected {
   text-decoration-thickness: 2px;
   text-decoration-color: #ffa94d;
 }
-
 </style>

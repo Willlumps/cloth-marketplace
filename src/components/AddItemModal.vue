@@ -59,11 +59,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { useUserStore } from "@/stores/user";
-import { upload } from "../get-items";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "../main";
+import { db, storage } from "../main";
 import { User } from "../datatypes";
 import { v4 as uuidv4 } from "uuid";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 @Component({
   components: {},
@@ -90,9 +90,8 @@ export default class AddItemModal extends Vue {
     const file = (document.getElementById("image") as HTMLInputElement)
       .files![0];
     const uuid = uuidv4();
-    const imgURL = await upload(file, uuid);
+    const imgURL = await this.upload(file, uuid);
     const tagList = this.tags.split(", ");
-    console.log(this.price);
 
     await setDoc(doc(db, "items", uuid.toString()), {
       description: this.description,
@@ -137,6 +136,40 @@ export default class AddItemModal extends Vue {
     this.isSubmitting = false;
     let input = document.getElementById("image") as HTMLInputElement;
     input.value = "";
+  }
+
+  async upload(file: any, uuid: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const metadata = {
+        contentType: "image/jpeg",
+      };
+
+      const uploadRef = ref(storage, `${uuid}.jpeg`);
+      const uploadTask = uploadBytesResumable(uploadRef, file, metadata);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+        (error) => {
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          console.log(error);
+          reject();
+        },
+        async () => {
+          // Upload completed successfully, now we can get the download URL
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            resolve(downloadURL);
+            return downloadURL;
+          });
+        }
+      );
+    });
   }
 }
 </script>

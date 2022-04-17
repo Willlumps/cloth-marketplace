@@ -37,7 +37,7 @@ import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
 import { Item, User } from "../datatypes";
 import { useUserStore } from "@/stores/user";
-import { getAllItems, refreshStore } from "../get-items";
+import { refreshStore } from "../store-helper";
 import { db } from "../main";
 import {
   collection,
@@ -74,7 +74,7 @@ export default class Home extends Vue {
         this.user = useUserStore();
         this.username = this.user!.name;
         this.location = this.user!.location;
-        this.items = await getAllItems();
+        this.items = await this.getAllItems();
         this.itemListener();
         this.balanceListener();
       } else {
@@ -86,7 +86,7 @@ export default class Home extends Vue {
   async itemListener() {
     let q = query(collection(db, "items"));
     onSnapshot(q, async () => {
-      this.items = await getAllItems();
+      this.items = await this.getAllItems();
     });
   }
 
@@ -104,7 +104,7 @@ export default class Home extends Vue {
   }
 
   async refreshItems() {
-    this.items = await getAllItems();
+    this.items = await this.getAllItems();
     this.emptySearch = false;
   }
 
@@ -127,6 +127,21 @@ export default class Home extends Vue {
       this.emptySearch = false;
     }
     this.items = filteredItems;
+  }
+
+  async getAllItems() {
+    const items: Item[] = [];
+    const itemCollection = collection(db, "items");
+
+    await getDocs(itemCollection).then((qs: QuerySnapshot) => {
+      qs.forEach((qd: QueryDocumentSnapshot) => {
+        if (qd.data().sold === false) {
+          items.push(qd.data() as Item);
+        }
+      });
+    });
+
+    return items;
   }
 }
 </script>

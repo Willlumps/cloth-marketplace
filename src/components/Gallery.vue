@@ -1,5 +1,5 @@
 <template>
-  <div id="container" v-show="isActive" >
+  <div id="container" v-show="isActive">
     <slot></slot>
     <h2 v-if="searchMatch">No results :(</h2>
     <div id="gallery">

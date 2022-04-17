@@ -7,9 +7,17 @@
       <h2>Available Balance: ${{ user.balance }}</h2>
     </div>
     <Tabs>
-      <Gallery :galleryItems="itemsForSale" title="Items Listed" :isProfile="true" />
+      <Gallery
+        :galleryItems="itemsForSale"
+        title="Items Listed"
+        :isProfile="true"
+      />
       <Gallery :galleryItems="itemsSold" title="Items Sold" :isProfile="true" />
-      <Gallery :galleryItems="itemsPurchased" title="Items Purchased" :isProfile="true" />
+      <Gallery
+        :galleryItems="itemsPurchased"
+        title="Items Purchased"
+        :isProfile="true"
+      />
     </Tabs>
     <AddItemModal
       v-show="showAddItemModal"
@@ -23,12 +31,20 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { useUserStore } from "@/stores/user";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+  QueryDocumentSnapshot,
+  QuerySnapshot,
+  getDocs,
+  collection,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import Gallery from "../components/Gallery.vue";
 import Header from "../components/Header.vue";
 import AddItemModal from "../components/AddItemModal.vue";
 import Tabs from "../components/Tabs.vue";
-import { getPersonalItems, getPurchasedItems, refreshStore } from "../get-items";
+import { refreshStore } from "../store-helper";
 import { Item, User } from "../datatypes";
 import { db } from "../main";
 import { getAuth, Auth, onAuthStateChanged } from "firebase/auth";
@@ -62,9 +78,9 @@ export default class Profile extends Vue {
         this.username = this.user!.name;
         this.location = this.user!.location;
         this.id = this.user!.id;
-        this.itemsForSale = await getPersonalItems(this.id, false);
-        this.itemsSold = await getPersonalItems(this.id, true);
-        this.itemsPurchased = await getPurchasedItems(this.id);
+        this.itemsForSale = await this.getPersonalItems(this.id, false);
+        this.itemsSold = await this.getPersonalItems(this.id, true);
+        this.itemsPurchased = await this.getPurchasedItems(this.id);
         this.itemListener(this.id);
         this.balanceListener();
       } else {
@@ -76,9 +92,9 @@ export default class Profile extends Vue {
   async itemListener(user: string) {
     let q = query(collection(db, "items"));
     onSnapshot(q, async () => {
-      this.itemsForSale = await getPersonalItems(user, false);
-      this.itemsSold = await getPersonalItems(user, true);
-      this.itemsPurchased = await getPurchasedItems(user);
+      this.itemsForSale = await this.getPersonalItems(user, false);
+      this.itemsSold = await this.getPersonalItems(user, true);
+      this.itemsPurchased = await this.getPurchasedItems(user);
     });
   }
 
@@ -89,6 +105,36 @@ export default class Profile extends Vue {
         this.user!.balance = doc.data().balance;
       });
     });
+  }
+
+  async getPersonalItems(uid: string, sold: boolean) {
+    const items: Item[] = [];
+    const itemCollection = collection(db, "items");
+
+    await getDocs(itemCollection).then((qs: QuerySnapshot) => {
+      qs.forEach((qd: QueryDocumentSnapshot) => {
+        if (qd.data().sold === sold && qd.data().user === uid) {
+          items.push(qd.data() as Item);
+        }
+      });
+    });
+
+    return items;
+  }
+
+  async getPurchasedItems(uid: string) {
+    const items: Item[] = [];
+    const itemCollection = collection(db, "items");
+
+    await getDocs(itemCollection).then((qs: QuerySnapshot) => {
+      qs.forEach((qd: QueryDocumentSnapshot) => {
+        if (qd.data().sold === true && qd.data().buyer === uid) {
+          items.push(qd.data() as Item);
+        }
+      });
+    });
+
+    return items;
   }
 
   toggleAddItemModal() {

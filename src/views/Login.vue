@@ -83,7 +83,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { refreshStore } from "../get-items";
+import { refreshStore } from "../store-helper";
 import { db } from "../main";
 import {
   collection,
@@ -175,7 +175,7 @@ export default class Login extends Vue {
       })
       .catch((err) => {
         const message = err.message;
-        switch(err.code) {
+        switch (err.code) {
           case "auth/invalid-email":
           case "auth/email-already-in-use":
             this.showMessage("Email/Username already in use");
@@ -196,7 +196,7 @@ export default class Login extends Vue {
         this.$router.push({ name: "home" });
       })
       .catch((err) => {
-        switch(err.code) {
+        switch (err.code) {
           case "auth/invalid-email":
           case "auth/user-not-found":
           case "auth/wrong-password":
@@ -349,5 +349,4 @@ export default class Login extends Vue {
   margin: 5px;
   border-radius: 5px;
 }
-
 </style>
