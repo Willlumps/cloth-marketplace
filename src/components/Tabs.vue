@@ -32,7 +32,7 @@ export default class Tabs extends Vue {
   }
 
   created() {
-    this.tabs = this.$children;
+    this.tabs = this.$children as Gallery[];
     console.log(this.tabs);
   }
 
@@ -50,16 +50,15 @@ export default class Tabs extends Vue {
   width: 100%;
   max-width: 1050px;
   margin: 0 auto;
-}
-
-.tab-header {
-  margin: 0 auto;
-  max-width: 1000px;
+  border: 2px solid black;
+  box-shadow: 4px 4px 4px grey;
   margin-top: 20px;
   border-radius: 15px;
   border-radius: 15px;
-  border: 2px solid black;
-  box-shadow: 4px 4px 4px grey;
+}
+
+.tab-header {
+  border-bottom: 2px solid black;
 }
 
 ul.tab-header {
