@@ -29,10 +29,16 @@
       <div v-if="!isProfile" class="btns">
         <button @click="$emit('close-modal')">Close</button>
         <button :disabled="isSelf" @click="buy">Buy</button>
+        <div id="msg">
+          <span v-show="message.length > 0">{{ message }}</span>
+        </div>
       </div>
       <div v-if="isProfile" class="btns">
         <button @click="$emit('close-modal')">Close</button>
         <button :disabled="sold" @click="removeListing">Remove</button>
+        <div id="msg">
+          <span v-show="message.length > 0">{{ message }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -57,6 +63,7 @@ export default class ItemModal extends Vue {
   @Prop() isSelf!: boolean;
   @Prop() sold!: boolean;
   user: User | null = null;
+  message = "";
 
   mounted() {
     this.user = useUserStore();
@@ -64,7 +71,6 @@ export default class ItemModal extends Vue {
 
   async buy() {
     await this.buyItem(this.item.id);
-    this.$emit("close-modal");
   }
 
   async buyItem(id: string) {
@@ -72,15 +78,16 @@ export default class ItemModal extends Vue {
     const item = await getDoc(ref);
     if (item.data()!.price > this.user!.balance) {
       // NO BUY FOR YOU
-      // TODO: Alert them?
-      return;
+      this.showMessage("Insufficient Funds");
+    } else {
+      this.creditSeller(item.data()!.user, item.data()!.price);
+      this.removeFunds(this.user!.id, item.data()!.price);
+      await updateDoc(ref, {
+        sold: true,
+        buyer: this.user!.id,
+      });
+      this.$emit("close-modal");
     }
-    this.creditSeller(item.data()!.user, item.data()!.price);
-    this.removeFunds(this.user!.id, item.data()!.price);
-    await updateDoc(ref, {
-      sold: true,
-      buyer: this.user!.id,
-    });
   }
 
   async creditSeller(id: string, price: number) {
@@ -126,6 +133,14 @@ export default class ItemModal extends Vue {
         console.log("Error removing image: ", error);
       });
   }
+
+  showMessage(txt: string) {
+    this.message = txt;
+    // The message will automatically disappear after 5 seconds
+    setTimeout(() => {
+      this.message = "";
+    }, 5000);
+  }
 }
 </script>
 
@@ -161,6 +176,24 @@ div {
 #left {
   width: 60%;
   height: 100%;
+}
+
+#msg {
+  height: 25px;
+  display: block;
+  align-content: center;
+  width: 100%;
+  margin-bottom: 7px;
+  position: relative;
+}
+
+#msg span {
+  font-size: 115%;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 7px;
+  padding: 5px;
+  font-style: italic;
 }
 
 .item-info {
@@ -267,7 +300,7 @@ p {
 
 .btns {
   width: 39%;
-  height: 20%;
+  height: 15%;
   border-left: 2px solid black;
   background-color: white;
 }
@@ -283,9 +316,6 @@ button {
   margin-left: 5px;
   margin-right: 5px;
   font-family: "Open Sans", sans-serif;
-}
-
-.btns button {
   background-color: transparent;
   border-radius: 5px;
   font-size: 200%;
