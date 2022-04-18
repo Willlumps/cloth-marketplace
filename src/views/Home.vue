@@ -7,9 +7,10 @@
         @refresh-gallery="refreshItems"
         :auth="auth"
         :balance="user.balance"
+        v-if="user !== null"
       />
     </div>
-    <div id="user">
+    <div id="user" v-if="user !== null">
       <h1>Welcome Back,&nbsp;</h1>
       <h1>{{ user.name }}!</h1>
     </div>

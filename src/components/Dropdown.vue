@@ -54,8 +54,8 @@ export default class Dropdown extends Vue {
 
 <style scoped>
 .menu-item {
-  height: 45px;
-  width: 100px;
+  height: 40px;
+  width: 50px;
   float: right;
 }
 
@@ -88,14 +88,14 @@ export default class Dropdown extends Vue {
 }
 
 #btn {
+  margin-top: 10px;
   border-radius: 5px;
   cursor: pointer;
   background-color: transparent;
   border: none;
   cursor: pointer;
   display: flex;
-  padding: 0;
-  width: 100px;
+  width: 50px;
   align-items: center;
   justify-content: right;
 }
@@ -106,7 +106,6 @@ export default class Dropdown extends Vue {
 }
 
 svg {
-  padding-left: 10px;
   width: 40px;
   height: 50%;
 }

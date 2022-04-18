@@ -5,7 +5,9 @@
         @add-item="toggleAddItemModal"
         :auth="auth"
         :isProfile="true"
-        :balance="user.balance" />
+        :balance="user.balance"
+        v-if="user !== null"/>
+
     </div>
     <Tabs>
       <Gallery

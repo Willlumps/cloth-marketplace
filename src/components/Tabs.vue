@@ -33,7 +33,6 @@ export default class Tabs extends Vue {
 
   created() {
     this.tabs = this.$children as Gallery[];
-    console.log(this.tabs);
   }
 
   selectTab(i: number) {

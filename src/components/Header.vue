@@ -15,10 +15,6 @@
       <h1>Cloth Marketplace</h1>
     </div>
     <div id="right">
-      <div id="balance">
-        <h2>Available Balance</h2>
-        <h2>${{ balance }}</h2>
-      </div>
       <Dropdown
         id="dropdown"
         title="MENU"
@@ -28,6 +24,10 @@
         @add-item="addItem"
         @add-funds="toggleModal"
       />
+      <div id="balance">
+        <h2>Available Balance</h2>
+        <h2>${{ balance }}</h2>
+      </div>
     </div>
     <Funds v-show="showFundsModal" @close-modal="toggleModal" />
   </div>
@@ -91,17 +91,6 @@ export default class Header extends Vue {
 </script>
 
 <style scoped>
-#balance {
-  display: block;
-  position: absolute;
-  left: 55%;
-  bottom: 1%;
-}
-
-#balance h2 {
-  font-family: "Dancing Script", cursive;
-}
-
 #balance h2:first-child {
   text-underline-offset: 2px;
   text-decoration: underline;
@@ -190,5 +179,15 @@ export default class Header extends Vue {
   box-shadow: 4px 4px 4px #ffa94d;
   white-space: normal;
   overflow: visible;
+}
+
+#balance {
+  display: block;
+  float: right;
+  bottom: 1%;
+}
+
+#balance h2 {
+  font-family: "Dancing Script", cursive;
 }
 </style>
