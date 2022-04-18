@@ -17,6 +17,7 @@
       <a href="#" @click="goHome">HOME</a>
       <a href="#" @click="goToProfile">PROFILE</a>
       <a href="#" @click="addItem">ADD ITEMS</a>
+      <a href="#" @click="funds">ADD / WITHDRAWAL FUNDS</a>
       <a href="#" @click="logout">LOGOUT</a>
     </div>
   </div>
@@ -39,6 +40,10 @@ export default class Dropdown extends Vue {
 
   addItem() {
     this.$emit("add-item");
+  }
+
+  funds() {
+    this.$emit("add-funds");
   }
 
   logout() {

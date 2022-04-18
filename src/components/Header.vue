@@ -22,8 +22,10 @@
         @go-home="goHome"
         @go-profile="goToProfile"
         @add-item="addItem"
+        @add-funds="toggleModal"
       />
     </div>
+    <Funds v-show="showFundsModal" @close-modal="toggleModal" />
   </div>
 </template>
 
@@ -31,16 +33,19 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Auth, getAuth, signOut } from "firebase/auth";
 import Dropdown from "./Dropdown.vue";
+import Funds from "./Funds.vue";
 
 @Component({
   components: {
     Dropdown,
+    Funds,
   },
 })
 export default class Header extends Vue {
   @Prop() auth!: Auth;
   @Prop() isProfile!: boolean;
   searchinput = "";
+  showFundsModal = false;
 
   mounted(): void {
     this.auth = getAuth();
@@ -48,6 +53,10 @@ export default class Header extends Vue {
 
   addItem() {
     this.$emit("add-item");
+  }
+
+  toggleModal() {
+    this.showFundsModal = !this.showFundsModal;
   }
 
   goToProfile() {
