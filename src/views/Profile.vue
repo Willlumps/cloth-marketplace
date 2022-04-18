@@ -1,10 +1,11 @@
 <template>
   <div id="profile">
     <div id="header">
-      <Header @add-item="toggleAddItemModal" :auth="auth" :isProfile="true" />
-    </div>
-    <div id="user">
-      <h2>Available Balance: ${{ user.balance }}</h2>
+      <Header
+        @add-item="toggleAddItemModal"
+        :auth="auth"
+        :isProfile="true"
+        :balance="user.balance" />
     </div>
     <Tabs>
       <Gallery
@@ -12,7 +13,10 @@
         title="Items Listed"
         :isProfile="true"
       />
-      <Gallery :galleryItems="itemsSold" title="Items Sold" :isProfile="true" />
+      <Gallery
+        :galleryItems="itemsSold"
+        title="Items Sold"
+        :isProfile="true" />
       <Gallery
         :galleryItems="itemsPurchased"
         title="Items Purchased"

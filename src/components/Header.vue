@@ -15,6 +15,10 @@
       <h1>Cloth Marketplace</h1>
     </div>
     <div id="right">
+      <div id="balance">
+        <h2>Available Balance</h2>
+        <h2>${{ balance }}</h2>
+      </div>
       <Dropdown
         id="dropdown"
         title="MENU"
@@ -44,6 +48,7 @@ import Funds from "./Funds.vue";
 export default class Header extends Vue {
   @Prop() auth!: Auth;
   @Prop() isProfile!: boolean;
+  @Prop() balance!: string;
   searchinput = "";
   showFundsModal = false;
 
@@ -86,6 +91,24 @@ export default class Header extends Vue {
 </script>
 
 <style scoped>
+#balance {
+  display: block;
+  position: absolute;
+  left: 55%;
+  bottom: 1%;
+}
+
+#balance h2 {
+  font-family: "Dancing Script", cursive;
+}
+
+#balance h2:first-child {
+  text-underline-offset: 2px;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffa94d;
+}
+
 .header {
   width: 100%;
   height: 75px;
