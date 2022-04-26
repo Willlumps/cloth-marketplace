@@ -39,6 +39,7 @@ import { Item, User } from "../datatypes";
 import { useUserStore } from "@/stores/user";
 import { refreshStore } from "../store-helper";
 import { db } from "../main";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import {
   collection,
   getDocs,
@@ -65,8 +66,10 @@ export default class Home extends Vue {
   emptySearch = false;
   location = "";
   username = "";
+  messaging = "";
 
   async mounted() {
+     console.log('Firebase cloud messaging object', this.$messaging)
     this.auth = getAuth();
     onAuthStateChanged(this.auth, async (user) => {
       if (user) {
@@ -140,6 +143,23 @@ export default class Home extends Vue {
         }
       });
     });
+
+    const messaging = getMessaging();
+    
+    
+// getToken(messaging, { vapidKey: 'BLzVh5nIm3f7TjPOZqq2K1-peaqGFF4Lg2yIF0DYmsupcEju8Oj2hnRV7aNfgSumMOyOpISZoKIaim8kzUofL4k' }).then((currentToken) => {
+//   if (currentToken) {
+//     // Send the token to your server and update the UI if necessary
+//     // ...
+//   } else {
+//     // Show permission request UI
+//     console.log('No registration token available. Request permission to generate one.');
+//     // ...
+//   }
+// }).catch((err) => {
+//   console.log('An error occurred while retrieving token. ', err);
+//   // ...
+// });
 
     return items;
   }
