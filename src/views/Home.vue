@@ -11,7 +11,7 @@
       />
     </div>
     <div id="user" v-if="user !== null">
-      <h1>Welcome Back,&nbsp;</h1>
+      <h1>Welcome back,&nbsp;</h1>
       <h1>{{ user.name }}!</h1>
     </div>
     <div>

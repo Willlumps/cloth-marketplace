@@ -11,6 +11,7 @@
       />
       <button v-if="Boolean(!isProfile)" id="btn" @click="search">GO</button>
     </div>
+    <img id="img" alt="save the planet" src="../assets/login-logo.webp" />
     <div id="center">
       <h1>Cloth Marketplace</h1>
     </div>
@@ -162,7 +163,7 @@ export default class Header extends Vue {
   height: 45px;
   width: 20%;
   max-width: 175px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -28,7 +28,7 @@
       </div>
       <div v-if="!isProfile" class="btns">
         <button @click="$emit('close-modal')">Close</button>
-        <button :disabled="isSelf" @click="buy">Buy</button>
+        <button :disabled="isSelf || item.price > user.balance" @click="buy">Buy</button>
         <div id="msg">
           <span v-show="message.length > 0">{{ message }}</span>
         </div>
@@ -77,7 +77,6 @@ export default class ItemModal extends Vue {
     const ref = doc(db, "items", id);
     const item = await getDoc(ref);
     if (item.data()!.price > this.user!.balance) {
-      // NO BUY FOR YOU
       this.showMessage("Insufficient Funds");
     } else {
       this.creditSeller(item.data()!.user, item.data()!.price);
@@ -163,7 +162,7 @@ div {
 .modal {
   width: 70%;
   max-width: 1000px;
-  height: 45%;
+  height: 60%;
   background-color: #eee;
   border-radius: 10px;
   margin-top: 10%;
@@ -318,7 +317,7 @@ button {
   font-family: "Open Sans", sans-serif;
   background-color: transparent;
   border-radius: 5px;
-  font-size: 200%;
+  font-size: 150%;
   cursor: pointer;
   outline: 1px solid grey;
 }
