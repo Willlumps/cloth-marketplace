@@ -160,9 +160,9 @@ div {
 }
 
 .modal {
-  width: 70%;
+  width: 60%;
   max-width: 1000px;
-  height: 60%;
+  height: 45%;
   background-color: #eee;
   border-radius: 10px;
   margin-top: 10%;

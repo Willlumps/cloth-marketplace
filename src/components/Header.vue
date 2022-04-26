@@ -11,8 +11,8 @@
       />
       <button v-if="Boolean(!isProfile)" id="btn" @click="search">GO</button>
     </div>
-    <img id="img" alt="save the planet" src="../assets/login-logo.webp" />
     <div id="center">
+      <img id="img" alt="save the planet" src="../assets/login-logo.webp" />
       <h1>Cloth Marketplace</h1>
     </div>
     <div id="right">
@@ -109,6 +109,9 @@ export default class Header extends Vue {
 }
 
 #center {
+  justify-content: center;
+  width: 48%;
+  display: flex;
   font-size: min(2vw, 170%);
   font-family: "Dancing Script", cursive;
   text-underline-offset: 5px;
@@ -117,10 +120,13 @@ export default class Header extends Vue {
   text-decoration-color: #ffa94d;
 }
 
+#center h1 {
+  margin-top: 10px;
+}
+
 #left,
-#center,
 #right {
-  width: 33%;
+  width: 28%;
 }
 
 #left {

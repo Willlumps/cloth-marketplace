@@ -119,7 +119,7 @@ export default class Home extends Vue {
       });
     });
     const filteredItems = itemList.filter((data) =>
-      data.tags.some((r: string) => searchTerms.includes(r))
+      data.tags.some((r: string) => searchTerms.includes(r) && !data.sold)
     );
     if (filteredItems.length == 0) {
       this.emptySearch = true;
