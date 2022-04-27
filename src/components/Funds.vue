@@ -68,7 +68,7 @@ export default class Funds extends Vue {
     const user = await getDoc(ref);
 
     if (user.exists()) {
-      const currentBalance = parseFloat(user.data().balance);
+      const currentBalance = parseFloat(parseFloat(user.data().balance).toFixed(2));
       const newBalance =
         this.selected === "Add Funds"
           ? currentBalance + price

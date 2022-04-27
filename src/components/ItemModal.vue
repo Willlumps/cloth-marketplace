@@ -94,7 +94,7 @@ export default class ItemModal extends Vue {
     const user = await getDoc(ref);
 
     if (user.exists()) {
-      const newBalance = parseFloat(user.data().balance) + price;
+      const newBalance = parseFloat((parseFloat(user.data().balance) + price).toFixed(2));
       await updateDoc(ref, {
         balance: newBalance,
       });
@@ -106,7 +106,7 @@ export default class ItemModal extends Vue {
     const user = await getDoc(ref);
 
     if (user.exists()) {
-      const newBalance = parseFloat(user.data().balance) - price;
+      const newBalance = parseFloat((parseFloat(user.data().balance) - price).toFixed(2));
       await updateDoc(ref, {
         balance: newBalance,
       });
